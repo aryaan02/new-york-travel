@@ -1,0 +1,1 @@
+sqlite3 ny_travel.sqlite ".read db_init.sql"
