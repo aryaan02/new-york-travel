@@ -1,5 +1,7 @@
 CREATE TABLE IF NOT EXISTS users (
     user_id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
+    first_name VARCHAR NOT NULL,
+    last_name VARCHAR NOT NULL,
     username VARCHAR NOT NULL,
     password VARCHAR NOT NULL,
     residence_city VARCHAR NOT NULL,
