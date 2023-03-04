@@ -8,7 +8,7 @@ app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-const DBFILEPATH = "./ny_travel.sqlite";
+const DBFILEPATH = "./db/ny_travel.sqlite";
 
 // Connect to database
 const db = new sqlite3.Database(DBFILEPATH, (err) => {
@@ -43,11 +43,11 @@ app.get("/zipcode", (req, res) => {
 */
 
 // SQL command to execute
-sql_cmd = "INSERT INTO users(first_name,last_name,username,password,residence_city,residence_state) VALUES (?,?,?,?,?,?)";
+let sql_cmd = "INSERT INTO users(first_name,last_name,username,password,residence_city,residence_state) VALUES (?,?,?,?,?,?)";
 
 // Insert uer registration info into database
 const registerUser = (userInfoJSON) => {
-    userInfoArray = [
+    let userInfoArray = [
         userInfoJSON['first_name'],
         userInfoJSON['last_name'],
         userInfoJSON['username'],
