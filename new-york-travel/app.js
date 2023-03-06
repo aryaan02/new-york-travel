@@ -2,22 +2,12 @@ const express = require('express');
 const sqlite3 = require('sqlite3');
 const cors = require('cors')
 const bodyParser = require('body-parser');
+const db_cmd = require('./db/db_cmd.js');
 
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-
-const DBFILEPATH = "./db/ny_travel.sqlite";
-
-// Connect to database
-const db = new sqlite3.Database(DBFILEPATH, (err) => {
-    if (err) {
-        console.log("Could not connect to db.");
-    } else {
-        console.log("Connected to db!");
-    }
-})
 
 // Confirm server connection
 app.listen(5000, () => {
@@ -42,6 +32,7 @@ app.get("/zipcode", (req, res) => {
 });
 */
 
+/*
 // SQL command to execute
 let sql_cmd = "INSERT INTO users(first_name,last_name,username,password,residence_city,residence_state) VALUES (?,?,?,?,?,?)";
 
@@ -67,6 +58,30 @@ const registerUser = (userInfoJSON) => {
         }
     })
     return 0;
+}
+*/
+
+const registerUser = (userInfoJSON) => {
+    let userInfoArray = [
+        userInfoJSON['first_name'],
+        userInfoJSON['last_name'],
+        userInfoJSON['username'],
+        userInfoJSON['password'],
+        userInfoJSON['residence_city'],
+        userInfoJSON['residence_state'],
+    ];
+    let insertParam = new db_cmd.insertParameters(
+        "users",
+        [["first_name",userInfoJSON["first_name"]],
+        ["last_name",userInfoJSON["last_name"]],
+        ["username",userInfoJSON["username"]],
+        ["password",userInfoJSON["password"]],
+        ["residence_city",userInfoJSON["residence_city"]],
+        ["residence_state",userInfoJSON["residence_state"]]]
+    );
+    console.log(userInfoJSON);
+    console.log(insertParam);
+    db_cmd.dbInsert(insertParam);
 }
 
 app.post("/register", (req, res) => {

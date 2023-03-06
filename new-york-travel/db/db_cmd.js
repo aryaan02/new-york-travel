@@ -1,6 +1,6 @@
 const sqlite3 = require("sqlite3");
 
-const DBFILEPATH = "./ny_travel.sqlite";
+const DBFILEPATH = "./db/ny_travel.sqlite";
 
 /*  Query parameter object
 
@@ -46,7 +46,7 @@ class queryParameters {
 
 /*  Insert Parameter object
     
-    table: table to insert into
+    tableName: table to insert into
     columnValues: pair of column name and values to insert    
 
     Format:
@@ -97,14 +97,15 @@ const queryCmd = (queryParam) => {
 
 // Generate SQL command for inserting items into database, return sql command string on success, null on fail.
 const insertCmd = (insertParam) => {
-  // let sql_cmd = "INSERT INTO users(first_name,last_name,username,password,residence_city,residence_state) VALUES (?,?,?,?,?,?)";
-  if (insertParam.table && insertParam.columnValues.length > 0) {
-    let sqlCmd = `INSERT INTO ${insertParam.table}`;
+  console.log(insertParam);
+  // let sql_cmd = "INSERT Ifunction NTO users(first_name,last_name,username,password,residence_city,residence_state) VALUES (?,?,?,?,?,?)";
+  if (insertParam.tableName && insertParam.columnValues.length > 0) {
+    let sqlCmd = `INSERT INTO ${insertParam.tableName}`;
     let columnList = [];
     let valueList = [];
     // Parse columnValues into two lists
     for (let i = 0; i < insertParam.columnValues.length; i++) {
-      if (insertParam.columnValues[i].length < 2) {
+      if (Object.keys(insertParam.columnValues[i]).length < 2) {
         console.log("Invalid column value pair for insert");
         return 0;
       }
@@ -114,7 +115,7 @@ const insertCmd = (insertParam) => {
     // Get prepared statement placeholder string
     let valueFields = "?,".repeat(insertParam.columnValues.length - 1) + "?";
     let columnNames = columnList.join(",");
-    sqlCmd += `${columnNames} VALUES (${valueFields})`;
+    sqlCmd += `(${columnNames}) VALUES (${valueFields})`;
     return [sqlCmd, valueList];
   } else {
     console.log("Invalid insert parameter");
@@ -131,36 +132,28 @@ const dbQuery = (queryParam) => {
 
 // Insert items into database
 const dbInsert = (insertParam) => {
-  let db = dbConn();
+  const db = dbConn();
+  let [sqlCmd, valueList] = insertCmd(insertParam);
+  console.log(sqlCmd);
+  console.log(valueList);
+
+  db.run(sqlCmd, valueList, function (err) {
+    if (err) {
+      console.log("Failed to insert into table.");
+      return console.log(err.message);
+    } else {
+      console.log("Sucessfully completed insert");
+    }
+  });
   dbClose(db);
   return 0;
 };
 
-/*
-// SQL command to execute
-let sql_cmd = "INSERT INTO users(first_name,last_name,username,password,residence_city,residence_state) VALUES (?,?,?,?,?,?)";
-
-// Insert uer registration info into database
-const registerUser = (userInfoJSON) => {
-    let userInfoArray = [
-        userInfoJSON['first_name'],
-        userInfoJSON['last_name'],
-        userInfoJSON['username'],
-        userInfoJSON['password'],
-        userInfoJSON['residence_city'],
-        userInfoJSON['residence_state'],
-    ];
-    // console.log("=====================");
-    // console.log(userInfoJSON);
-    //console.log(userInfoArray);
-    db.run(sql_cmd, userInfoArray, function(err) {
-        if (err) {
-            console.log("Failed to insert user into table.");
-            return console.log(err.message);
-        } else {
-            console.log("Sucessfully completed insert");
-        }
-    })
-    return 0;
-}
-*/
+module.exports = {
+  queryParameters,
+  insertParameters,
+  insertCmd,
+  queryCmd,
+  dbQuery,
+  dbInsert,
+};
