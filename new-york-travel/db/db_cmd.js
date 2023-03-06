@@ -8,15 +8,15 @@ const DBFILEPATH = "./db/ny_travel.sqlite";
     joinList: tables to join with join conditions
     filterList: filters to use in WHERE statements
     sortingList: arguments for ORDER BY
-    groupBy: arguments to GROUP BY statement
-    limit: max number of rows returned
+    groupBy: arguments to GROUP BY statement, null if not needed
+    limit: max number of rows returned, 0 if no limit
 
     Format:
     columns = [column_name1, column_name2, ...]
     joinList = [table1, [table2, join_condition2], ...]
     filterList = [[column_name1, condition1, filter_string1], ...]
     sortingList = [[column_name1, "ASC" | "DESC"], ...]
-    groupLy = column_name
+    groupBy = column_name
     limit = max elements as integer
 
     Example:
@@ -90,20 +90,78 @@ const dbClose = (db) => {
   });
 };
 
-// Generate SQL command to query from database, return sql command string on success, null on fail.
+// Generate SQL command to query from database
+// Return sql command string and list of parepared statement values on success
+// Return null on fail.
 const queryCmd = (queryParam) => {
-  return 0;
+  console.log(queryParam);
+  let sqlCmd = "";
+  let valuesList = [];
+  if (queryParam.columns.length > 0) {
+    // Add columns to select
+    sqlCmd += `SELECT ${queryParam.columns.join(",")}`;
+  } else {
+    console.log("Invalid query parameters: missing columns list.");
+    return null;
+  }
+
+  // Create JOIN command
+  if (queryParam.joinList.length > 0) {
+    sqlCmd += ` FROM ${queryParam.joinList[0]}`;
+    let tableName, joinCond;
+    for (let i = 1; i < queryParam.joinList.length; i++) {
+      [tableName, joinCond] = queryParam.joinList[i];
+      sqlCmd += ` JOIN ${tableName} ON ${joinCond}`;
+    }
+  } else {
+    console.log("Invalid query parameters: missing join list.");
+    return null;
+  }
+
+  // Create filter/WHERE command and list of values to filter by
+  if (queryParam.filterList.length > 0) {
+    let [filterCol, filterOp, filterValue] = queryParam.filterList[0];
+    sqlCmd += ` WHERE ${filterCol} ${filterOp} ?`;
+    valuesList.push(filterValue);
+    for (let i = 1; i < queryParam.filterList.length; i++) {
+      [filterCol, filterOp, filterValue] = queryParam.filterList[i];
+      sqlCmd += ` AND ${filterCol} ${filterOp} ?`;
+      valuesList.push(filterValue);
+    }
+  }
+
+  // Add groupby command
+  if (queryParam.gropuBy) {
+    sqlCmd += ` GROUP BY ${queryParam.groupBy}`;
+  }
+
+  // Add sorting/ORDER BY command
+  if (queryParam.sortingList.length > 0) {
+    sqlCmd += ` ORDER BY ${queryParam.sortingList[0]}`;
+    for (let i = 1; i < queryParam.sortingList.length; i++) {
+      sqlCmd += `, ${queryParam.sortingList[i]}`;
+    }
+  }
+
+  // Add limit statement
+  if (queryParam.limit) {
+    sqlCmd += ` LIMIT ${queryParam.limit}`;
+  }
+
+  return [sqlCmd, valuesList];
 };
 
-// Generate SQL command for inserting items into database, return sql command string on success, null on fail.
+// Generate SQL command for inserting items into database
+// Return sql command string and values for prepared statements on success
+// Return null on fail.
 const insertCmd = (insertParam) => {
   console.log(insertParam);
-  // let sql_cmd = "INSERT Ifunction NTO users(first_name,last_name,username,password,residence_city,residence_state) VALUES (?,?,?,?,?,?)";
+  let valueList = [];
   if (insertParam.tableName && insertParam.columnValues.length > 0) {
     let sqlCmd = `INSERT INTO ${insertParam.tableName}`;
-    let columnList = [];
-    let valueList = [];
+
     // Parse columnValues into two lists
+    let columnList = [];
     for (let i = 0; i < insertParam.columnValues.length; i++) {
       if (Object.keys(insertParam.columnValues[i]).length < 2) {
         console.log("Invalid column value pair for insert");
@@ -112,10 +170,12 @@ const insertCmd = (insertParam) => {
       columnList.push(insertParam.columnValues[i][0]);
       valueList.push(insertParam.columnValues[i][1]);
     }
+
     // Get prepared statement placeholder string
     let valueFields = "?,".repeat(insertParam.columnValues.length - 1) + "?";
     let columnNames = columnList.join(",");
     sqlCmd += `(${columnNames}) VALUES (${valueFields})`;
+
     return [sqlCmd, valueList];
   } else {
     console.log("Invalid insert parameter");
@@ -123,28 +183,62 @@ const insertCmd = (insertParam) => {
   }
 };
 
-// Query items from database
+// Query items from database, return rows object on success, null on fail.
 const dbQuery = (queryParam) => {
   let db = dbConn();
-  dbClose(db);
-  return 0;
+
+  // Get sql command for querying
+  let [sqlCmd, valuesList] = queryCmd(queryParam);
+  let resultArray = [];
+  //console.log(sqlCmd);
+  //console.log(valuesList);
+
+  // Run command and check for errors
+  let db_promise = new Promise(resolve => {
+    db.all(sqlCmd, valuesList, (err, rows) => {
+      //console.log("db.all call triggered");
+      if (err) {
+        console.log("Error during DB query");
+        console.log(err.message);
+        resolve(null);
+      }
+      rows.forEach((row) => {
+        //console.log("Printing each row");
+        //console.log(row);
+        resultArray.push(row);
+
+        // Return results
+        dbClose(db);
+        //console.log(resultArray);
+        resolve(resultArray);
+      });
+    });
+  });
+
+  return db_promise;
 };
 
-// Insert items into database
+// Insert items into database, return 0 on success, 1 on fail
+// TODO: Make this async
 const dbInsert = (insertParam) => {
   const db = dbConn();
+
+  // Get sql command for inserting
   let [sqlCmd, valueList] = insertCmd(insertParam);
   console.log(sqlCmd);
   console.log(valueList);
 
+  // Run command and check error message
   db.run(sqlCmd, valueList, function (err) {
     if (err) {
       console.log("Failed to insert into table.");
-      return console.log(err.message);
+      console.log(err.message);
+      return 1;
     } else {
       console.log("Sucessfully completed insert");
     }
   });
+
   dbClose(db);
   return 0;
 };

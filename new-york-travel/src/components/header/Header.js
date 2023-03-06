@@ -1,6 +1,7 @@
 import React from "react";
 
-import { Flex, Box, Heading } from "@chakra-ui/react";
+import { Flex, Box, Heading, HStack } from "@chakra-ui/react";
+import { MdLocationCity, MdDirectionsSubway } from "react-icons/md";
 
 const Header = () => {
   return (
@@ -16,6 +17,10 @@ const Header = () => {
           New York Travel
         </Heading>
       </Box>
+      <HStack>
+        <MdLocationCity size="80" />
+        <MdDirectionsSubway size="80" />
+      </HStack>
     </Flex>
   );
 };

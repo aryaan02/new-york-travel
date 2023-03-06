@@ -1,9 +1,10 @@
 import React from "react";
 import LoginPage from "./pages/LoginPage";
 import RegisterPage from "./pages/RegisterPage";
+import AccountPage from "./pages/AccountPage";
 import { Route, Routes } from "react-router-dom";
 import { HashRouter } from "react-router-dom";
-import { ChakraProvider, extendTheme } from "@chakra-ui/react";
+import { ChakraProvider } from "@chakra-ui/react";
 
 
 function App() {
@@ -13,7 +14,8 @@ function App() {
         <Routes>
           <Route path="/" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-        </Routes>
+          <Route path="/account" element={<AccountPage />} />
+        </Routes> 
       </HashRouter>
     </ChakraProvider>
   );

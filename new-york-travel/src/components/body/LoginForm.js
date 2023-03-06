@@ -24,6 +24,23 @@ const LoginForm = (props) => {
   const navigateRegister = () => {
     navigate("/register");
   };
+  const navigateAccount = (e) => {
+    e.preventDefault();
+    let state = {
+      username: username,
+      password: password,
+    };
+    console.log(JSON.stringify(state));
+    fetch("http://localhost:5000/login", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(state),
+    }).then((result) => {
+      return;
+    });
+  };
 
   // Live updates text as user types
   const usernameChangeHandler = (e) => {
@@ -58,7 +75,7 @@ const LoginForm = (props) => {
                 />
               </FormControl>
             </HStack>
-            <Button colorScheme="blue" width="full" mt={4} type="submit">
+            <Button onClick={navigateAccount} colorScheme="blue" width="full" mt={4} type="submit">
               Login
             </Button>
             <Text mt={4} textAlign="center">
