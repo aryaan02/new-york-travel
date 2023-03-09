@@ -25,6 +25,7 @@ const RegisterForm = (props) => {
 
   // Navigate to register page
   const navigate = useNavigate();
+
   const navigateLogin = () => {
     navigate("/");
   };
@@ -67,7 +68,12 @@ const RegisterForm = (props) => {
       },
       body: JSON.stringify(state),
     }).then((result) => {
-      return;
+      if (result.status === 200) {
+        console.log("Registration successful");
+        navigateLogin();
+      } else {
+        console.log("Registration failed");
+      }
     });
   };
 
@@ -75,7 +81,7 @@ const RegisterForm = (props) => {
     <Flex width="full" align="center" justifyContent="center">
       <Box p={2}>
         <Box m={10} textAlign="left">
-          <form onSubmit={handleRegister}>
+          <form>
             <HStack mt={6}>
               <FormControl isRequired>
                 <FormLabel>First Name</FormLabel>
@@ -132,7 +138,7 @@ const RegisterForm = (props) => {
                 />
               </FormControl>
             </HStack>
-            <Button colorScheme="blue" width="full" mt={4} type="submit">
+            <Button colorScheme="blue" width="full" mt={4} onClick={handleRegister}>
               Register
             </Button>
             <Text mt={4} textAlign="center">

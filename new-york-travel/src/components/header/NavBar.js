@@ -5,8 +5,11 @@ import NavBarContainer from "./NavBarContainer";
 import Logo from "./Logo";
 
 const NavBar = (props) => {
+  
   const navigate = useNavigate();
+
   const navigateLogin = () => {
+    props.setLoggedIn(false);
     navigate("/");
   };
 

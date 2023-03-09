@@ -5,8 +5,8 @@ import NavBar from "../components/header/NavBar";
 const AccountPage = (props) => {
   return (
     <Fragment>
-      <NavBar />
-      <Account />
+      <NavBar setLoggedIn={props.setLoggedIn} />
+      <Account loggedIn={props.loggedIn} userInfo={props.userInfo} />
     </Fragment>
   );
 };

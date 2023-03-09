@@ -210,15 +210,19 @@ const dbQuery = (queryParam) => {
         // Return results
         dbClose(db);
         //console.log(resultArray);
-        resolve(resultArray);
       });
+      if (resultArray.length > 0) {
+        resolve(resultArray);
+      } else {
+        resolve([]);
+      }
     });
   });
 
   return db_promise;
 };
 
-// Insert items into database, return 0 on success, 1 on fail
+// Insert items into database, return true on success, false on fail
 // TODO: Make this async
 const dbInsert = (insertParam) => {
   const db = dbConn();
@@ -229,18 +233,21 @@ const dbInsert = (insertParam) => {
   console.log(valueList);
 
   // Run command and check error message
-  db.run(sqlCmd, valueList, function (err) {
-    if (err) {
-      console.log("Failed to insert into table.");
-      console.log(err.message);
-      return 1;
-    } else {
-      console.log("Sucessfully completed insert");
-    }
+  let db_promise = new Promise(resolve => {
+    db.run(sqlCmd, valueList, function (err) {
+      if (err) {
+        console.log("Failed to insert into table.");
+        console.log(err.message);
+        resolve(false);
+      } else {
+        console.log("Sucessfully completed insert");
+        resolve(true);
+      }
+    });
   });
 
   dbClose(db);
-  return 0;
+  return db_promise;
 };
 
 module.exports = {
