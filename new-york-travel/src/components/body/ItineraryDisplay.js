@@ -1,7 +1,13 @@
 import React from "react";
-import { Card, CardBody, Stack, Text, Heading, HStack } from "@chakra-ui/react";
+import { Card, CardBody, Stack, Text, Heading, Button } from "@chakra-ui/react";
 
 const ItineraryDisplay = (props) => {
+  const navigateItineraryDetails = () => {
+    props.setShowDetails(true);
+    console.log(props.itinerary.itin_id);
+    props.setItinId(props.itinerary.itin_id);
+    // navigate(`/itinerary/${props.itinerary.itin_id}`);
+  };
   return (
     <Card
       direction={{ base: "column", sm: "row" }}
@@ -21,6 +27,13 @@ const ItineraryDisplay = (props) => {
             <strong>End Date: </strong>
             {props.itinerary.end_date}
           </Text>
+          <Button
+            colorScheme="blue"
+            size="sm"
+            onClick={navigateItineraryDetails}
+          >
+            View Details
+          </Button>
         </CardBody>
       </Stack>
     </Card>

@@ -267,7 +267,7 @@ app.get("/itineraries/:id", async (req, res) => {
 });
 
 // Lookup all itin info given itin_id
-const itinEntryQuery = async (itinId) => {
+const itinEntryQuery = async (itinInfo) => {
   // Get itinerary information
   let itinParam = new dbCmd.queryParameters (
     [
@@ -277,10 +277,13 @@ const itinEntryQuery = async (itinId) => {
       "itin_description",
     ],
     [
-      "itineraries",
+      "users",
+      ["users_itineraries", "users.user_id=users_itineraries.user_id"],
+      ["itineraries", "users_itineraries.itin_id=itineraries.itin_id"]
     ],
     [
-      ["itin_id", "=", itinId]
+      ["itineraries.itin_id", "=", itinInfo.itin_id],
+      ["users.user_id", "=", itinInfo.user_id]
     ],
     [],
     null,
@@ -290,6 +293,7 @@ const itinEntryQuery = async (itinId) => {
   if (itinResult.length === 0) {
     return null;
   }
+  console.log(itinResult);
 
   // Get destination information
   let destParam = new dbCmd.queryParameters (
@@ -302,13 +306,16 @@ const itinEntryQuery = async (itinId) => {
       "locations.loc_addr"
     ],
     [
-      "itineraries",
+      "users",
+      ["users_itineraries", "users.user_id=users_itineraries.user_id"],
+      ["itineraries", "users_itineraries.itin_id=itineraries.itin_id"],
       ["itins_dests", "itineraries.itin_id=itins_dests.itin_id"],
       ["destinations", "itins_dests.dest_id=destinations.dest_id"],
       ["locations","destinations.loc_id=locations.loc_id"]
     ],
     [
-      ["itineraries.itin_id", "=", itinId]
+      ["itineraries.itin_id", "=", itinInfo.itin_id],
+      ["users.user_id", "=", itinInfo.user_id]
     ],
     [
       ["destinations.visit_date", "ASC"],
@@ -318,21 +325,23 @@ const itinEntryQuery = async (itinId) => {
     0
   )
   let destResult = await dbCmd.dbQuery(destParam);
+  console.log(destResult);
   return {
-    itin_name: itinResult.itin_name,
-    start_date: itinResult.start_date,
-    end_date: itinResult.end_date,
-    itin_description: itinResult.itinDescription,
+    itin_name: itinResult[0].itin_name,
+    start_date: itinResult[0].start_date,
+    end_date: itinResult[0].end_date,
+    itin_description: itinResult[0].itinDescription,
     dest_list: destResult
   };
 }
 
 // Handles itin info lookup
-app.get("/itinerary-entries/:id", async (req, res) => {
-  const result = await itinEntryQuery(req.params.itinId);
+app.post("/itinerary-entries", async (req, res) => {
+  const result = await itinEntryQuery(req.body);
   if (result) {
     // Query successful
     console.log("Itin entries query successful.");
+    console.log(result);
     res.status(200).send(JSON.stringify(result));
   } else {
     // Query failed

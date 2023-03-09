@@ -230,8 +230,8 @@ const dbInsert = (insertParam) => {
 
   // Get sql command for inserting
   let [sqlCmd, valueList] = insertCmd(insertParam);
-  console.log(sqlCmd);
-  console.log(valueList);
+  // console.log(sqlCmd);
+  // console.log(valueList);
 
   // Run command and check error message
   let db_promise = new Promise(resolve => {

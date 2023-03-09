@@ -6,6 +6,7 @@ import NewItineraryPage from "./pages/NewItineraryPage";
 import { Route, Routes } from "react-router-dom";
 import { HashRouter } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
+import ItineraryDetailsPage from "./pages/ItineraryDetailsPage";
 
 function App() {
   // const [user, setUser] = useState(null);
@@ -15,37 +16,11 @@ function App() {
     <ChakraProvider>
       <HashRouter>
         <Routes>
-          <Route
-            path="/"
-            element={
-              <LoginPage
-              // loggedIn={loggedIn}
-              // setUser={setUser}
-              // setLoggedIn={setLoggedIn}
-              />
-            }
-          />
+          <Route path="/" element={<LoginPage />} />
           <Route path="/register" element={<RegisterPage />} />
-          <Route
-            path="/account"
-            element={
-              <AccountPage
-              //   userInfo={user}
-              //   setLoggedIn={setLoggedIn}
-              //   loggedIn={loggedIn}
-              />
-            }
-          />
-          <Route
-            path="/create-itinerary"
-            element={
-              <NewItineraryPage
-              // userInfo={user}
-              // setLoggedIn={setLoggedIn}
-              // loggedIn={loggedIn}
-              />
-            }
-          />
+          <Route path="/account" element={<AccountPage />} />
+          <Route path="/create-itinerary" element={<NewItineraryPage />} />
+          <Route path="/itinerary" element={<ItineraryDetailsPage />} />
         </Routes>
       </HashRouter>
     </ChakraProvider>
