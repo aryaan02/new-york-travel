@@ -21,9 +21,9 @@ const DBFILEPATH = "./db/ny_travel.sqlite";
 
     Example:
     queryParam.columns = ["users.username", "users.password"]
-    queryParam.joinList = ["destinations", ["locations", "destinations..loc_id = locations.id"]]
+    queryParam.joinList = ["destinations", ["locations", "destinations.loc_id = locations.id"]]
     queryParam.filterList = [["users.username", "LIKE", "jack"], ["locations.name", "=", "Wall Street"]]
-    queryParam.sortingList = ["itineraries.name, "ASC"]
+    queryParam.sortingList = [["itineraries.name, "ASC"]]
     queryParam.groupBy = "users.username"
     queryParam.limit = 1000
 */
@@ -137,9 +137,9 @@ const queryCmd = (queryParam) => {
 
   // Add sorting/ORDER BY command
   if (queryParam.sortingList.length > 0) {
-    sqlCmd += ` ORDER BY ${queryParam.sortingList[0]}`;
+    sqlCmd += ` ORDER BY ${queryParam.sortingList[0][0]} ${queryParam.sortingList[0][1]}`;
     for (let i = 1; i < queryParam.sortingList.length; i++) {
-      sqlCmd += `, ${queryParam.sortingList[i]}`;
+      sqlCmd += `, ${queryParam.sortingList[i][0]} ${queryParam.sortingList[i][1]}`;
     }
   }
 
@@ -190,8 +190,8 @@ const dbQuery = (queryParam) => {
   // Get sql command for querying
   let [sqlCmd, valuesList] = queryCmd(queryParam);
   let resultArray = [];
-  //console.log(sqlCmd);
-  //console.log(valuesList);
+  console.log(sqlCmd);
+  console.log(valuesList);
 
   // Run command and check for errors
   let db_promise = new Promise(resolve => {
@@ -208,9 +208,9 @@ const dbQuery = (queryParam) => {
         resultArray.push(row);
 
         // Return results
-        dbClose(db);
         //console.log(resultArray);
       });
+      
       if (resultArray.length > 0) {
         resolve(resultArray);
       } else {
@@ -219,10 +219,11 @@ const dbQuery = (queryParam) => {
     });
   });
 
+  dbClose(db);
   return db_promise;
 };
 
-// Insert items into database, return true on success, false on fail
+// Insert items into database, return insertd item id on success, null on fail
 // TODO: Make this async
 const dbInsert = (insertParam) => {
   const db = dbConn();
@@ -238,10 +239,10 @@ const dbInsert = (insertParam) => {
       if (err) {
         console.log("Failed to insert into table.");
         console.log(err.message);
-        resolve(false);
+        resolve(null);
       } else {
         console.log("Sucessfully completed insert");
-        resolve(true);
+        resolve(this.lastID);
       }
     });
   });

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 
 import {
   Flex,
@@ -54,8 +55,15 @@ const LoginForm = (props) => {
         resultPromise.then((result) => {
           // Set user object state
           let resultJSON = result;
-          props.setUser(resultJSON);
-          props.setLoggedIn(true);
+          // props.setUser(resultJSON);
+          // props.setLoggedIn(true);
+          Cookies.set("user_id", resultJSON.user_id);
+          Cookies.set("username", resultJSON.username);
+          Cookies.set("first_name", resultJSON.first_name);
+          Cookies.set("last_name", resultJSON.last_name);
+          Cookies.set("residence_city", resultJSON.residence_city);
+          Cookies.set("residence_state", resultJSON.residence_state);
+          Cookies.set("logged_in", true);
           navigate("/account");
         })
       } else if (result.status === 401) {
