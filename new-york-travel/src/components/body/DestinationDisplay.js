@@ -16,6 +16,14 @@ const DestinationDisplay = (props) => {
   const [visitStartTime, setVisitStartTime] = useState(null);
   const [visitEndTime, setVisitEndTime] = useState(null);
   const [visitNote, setVisitNote] = useState(null);
+  console.log(props);
+  const openHoursMon = props.destination.location.loc_hours_mon;
+  const openHoursTue = props.destination.location.loc_hours_tue;
+  const openHoursWed = props.destination.location.loc_hours_wed;
+  const openHoursThu = props.destination.location.loc_hours_thu;
+  const openHoursFri = props.destination.location.loc_hours_fri;
+  const openHoursSat = props.destination.location.loc_hours_sat;
+  const openHoursSun = props.destination.location.loc_hours_sun;
 
   const visitDateHandler = (e) => {
     setVisitDate(e.target.value);
@@ -76,14 +84,20 @@ const DestinationDisplay = (props) => {
         <CardBody>
           <Heading size="md">{props.destination.location.loc_name}</Heading>
 
+          {openHoursMon &&
           <Text py="2">
-            <strong>Opening Time:</strong>{" "}
-            {props.destination.location.loc_open_time}
+            <strong>Business Hours:</strong>
+            <ul>
+              <li>{openHoursMon}</li>
+              <li>{openHoursTue}</li>
+              <li>{openHoursWed}</li>
+              <li>{openHoursThu}</li>
+              <li>{openHoursFri}</li>
+              <li>{openHoursSat}</li>
+              <li>{openHoursSun}</li>
+            </ul>
           </Text>
-          <Text py="2">
-            <strong>Closing Time:</strong>{" "}
-            {props.destination.location.loc_close_time}
-          </Text>
+          }
           <Text py="2">
             <strong>Address:</strong> {props.destination.location.loc_addr}
           </Text>

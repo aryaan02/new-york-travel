@@ -18,8 +18,13 @@ const LocationCard = (props) => {
   console.log(props.location);
 
   const name = props.location.loc_name;
-  const openTime = props.location.loc_open_time;
-  const closeTime = props.location.loc_close_time;
+  const openHoursMon = props.location.loc_hours_mon;
+  const openHoursTue = props.location.loc_hours_tue;
+  const openHoursWed = props.location.loc_hours_wed;
+  const openHoursThu = props.location.loc_hours_thu;
+  const openHoursFri = props.location.loc_hours_fri;
+  const openHoursSat = props.location.loc_hours_sat;
+  const openHoursSun = props.location.loc_hours_sun;
   const type = props.location.loc_type;
   const address = props.location.loc_addr;
 
@@ -33,12 +38,20 @@ const LocationCard = (props) => {
       <Stack>
         <CardBody>
           <Heading size="md">{name}</Heading>
+          {openHoursMon &&
           <Text py="2">
-            <strong>Open Time:</strong> {openTime}
+            <strong>Business Hours:</strong>
+            <ul>
+              <li>{openHoursMon}</li>
+              <li>{openHoursTue}</li>
+              <li>{openHoursWed}</li>
+              <li>{openHoursThu}</li>
+              <li>{openHoursFri}</li>
+              <li>{openHoursSat}</li>
+              <li>{openHoursSun}</li>
+            </ul>
           </Text>
-          <Text py="2">
-            <strong>Close Time:</strong> {closeTime}
-          </Text>
+          }
           <Text py="2">
             <strong>Type:</strong> {type}
           </Text>

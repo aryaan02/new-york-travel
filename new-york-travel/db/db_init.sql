@@ -29,10 +29,17 @@ CREATE TABLE IF NOT EXISTS users_itineraries (
 CREATE TABLE IF NOT EXISTS locations (
     loc_id INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,
     loc_name VARCHAR NOT NULL,
-    loc_open_time VARCHAR NOT NULL,
-    loc_close_time VARCHAR NOT NULL,
+    loc_hours_mon VARCHAR,
+    loc_hours_tue VARCHAR,
+    loc_hours_wed VARCHAR,
+    loc_hours_thu VARCHAR,
+    loc_hours_fri VARCHAR,
+    loc_hours_sat VARCHAR,
+    loc_hours_sun VARCHAR,
     loc_addr VARCHAR NOT NULL,
-    loc_type VARCHAR NOT NULL
+    loc_type VARCHAR NOT NULL,
+    loc_rating REAL,
+    loc_rating_count INTEGER
 );
 
 CREATE TABLE IF NOT EXISTS destinations (
@@ -55,12 +62,3 @@ CREATE TABLE IF NOT EXISTS itins_dests (
     FOREIGN KEY (dest_id)
         REFERENCES destinations (dest_id)
 );
-
-INSERT INTO 
-locations(loc_name, loc_open_time, loc_close_time, loc_addr, loc_type)
-VALUES
-("Empire State Building", "10:00", "21:00", "20 W 29th St, New York, NY 10001", "Attraction");
-INSERT INTO 
-locations(loc_name, loc_open_time, loc_close_time, loc_addr, loc_type)
-VALUES
-("Statue of Liberty", "8:30", "16:00", "Liberty Island, New York, NY 10004", "Attraction");
