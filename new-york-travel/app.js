@@ -293,7 +293,7 @@ const itinEntryQuery = async (itinInfo) => {
   if (itinResult.length === 0) {
     return null;
   }
-  console.log(itinResult);
+  //console.log(itinResult);
 
   // Get destination information
   let destParam = new dbCmd.queryParameters (
@@ -325,7 +325,7 @@ const itinEntryQuery = async (itinInfo) => {
     0
   )
   let destResult = await dbCmd.dbQuery(destParam);
-  console.log(destResult);
+  //console.log(destResult);
   return {
     itin_name: itinResult[0].itin_name,
     start_date: itinResult[0].start_date,
@@ -341,11 +341,43 @@ app.post("/itinerary-entries", async (req, res) => {
   if (result) {
     // Query successful
     console.log("Itin entries query successful.");
-    console.log(result);
+    //console.log(result);
     res.status(200).send(JSON.stringify(result));
   } else {
     // Query failed
     console.log("Itin entries query failed.");
+    res.sendStatus(401);
+  }
+});
+
+// Get user info from database
+const userQuery = async (user_id) => {
+  let queryParam = new dbCmd.queryParameters (
+    ["username", "first_name", "last_name", "username", "residence_city", "residence_state"],
+    ["users"],
+    [["user_id", "=", user_id]],
+    [],
+    null,
+    0
+  );
+  let result = await dbCmd.dbQuery(queryParam);
+  return result;
+};
+
+// Handle request to get uer info
+app.post("/user-info", async (req, res) => {
+  // console.log(req.param.user_id);
+  console.log(req.body.user_id)
+  console.log("user info query");
+  const result = await userQuery(req.body.user_id);
+  if (result) {
+    // Query successful
+    console.log("User info query successful.");
+    console.log(result);
+    res.status(200).send(JSON.stringify(result));
+  } else {
+    // Query failed
+    console.log("User info query failed.");
     res.sendStatus(401);
   }
 });
