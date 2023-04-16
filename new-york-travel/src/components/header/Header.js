@@ -13,7 +13,7 @@ const Header = () => {
       mt={20}
     >
       <Box>
-        <Heading as="h1" size="4xl">
+        <Heading as="h1" size={["3xl", "4xl"]}>
           New York Travel
         </Heading>
       </Box>

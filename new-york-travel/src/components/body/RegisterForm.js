@@ -80,7 +80,7 @@ const RegisterForm = (props) => {
   return (
     <Flex width="full" align="center" justifyContent="center">
       <Box p={2}>
-        <Box m={10} textAlign="left">
+        <Box m={5} textAlign="left">
           <form>
             <HStack mt={6}>
               <FormControl isRequired>

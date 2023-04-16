@@ -9,6 +9,9 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Button,
+  Center,
+  VStack,
 } from "@chakra-ui/react";
 
 const DestinationDisplay = (props) => {
@@ -27,38 +30,18 @@ const DestinationDisplay = (props) => {
 
   const visitDateHandler = (e) => {
     setVisitDate(e.target.value);
-    /*
-    localDestination = { ...localDestination, visitDate: visitDate };
-    console.log(localDestination);
-    props.updateDestination(localDestination, props.index);
-    */
   };
 
   const visitStartTimeHandler = (e) => {
     setVisitStartTime(e.target.value);
-    /*
-    localDestination = { ...localDestination, visitStartTime: visitStartTime };
-    console.log(localDestination);
-    props.updateDestination(localDestination, props.index);
-    */
   };
 
   const visitEndTimeHandler = (e) => {
     setVisitEndTime(e.target.value);
-    /*
-    localDestination = { ...localDestination, visitEndTime: visitEndTime };
-    console.log(localDestination);
-    props.updateDestination(localDestination, props.index);
-    */
   };
 
   const visitNoteHandler = (e) => {
     setVisitNote(e.target.value);
-    /*
-    localDestination = { ...localDestination, visitNote: visitNote };
-    console.log(localDestination);
-    props.updateDestination(localDestination, props.index);
-    */
   };
 
   useEffect(() => {
@@ -71,7 +54,7 @@ const DestinationDisplay = (props) => {
       visitNote: visitNote,
     };
     props.updateDestination(localDestination, props.index);
-  }, [visitDate, visitStartTime, visitEndTime, visitNote]);
+  }, [props, visitDate, visitStartTime, visitEndTime, visitNote]);
 
   return (
     <Card
@@ -84,20 +67,31 @@ const DestinationDisplay = (props) => {
         <CardBody>
           <Heading size="md">{props.destination.location.loc_name}</Heading>
 
-          {openHoursMon &&
-          <Text py="2">
-            <strong>Business Hours:</strong>
-            <ul>
-              <li>{openHoursMon}</li>
-              <li>{openHoursTue}</li>
-              <li>{openHoursWed}</li>
-              <li>{openHoursThu}</li>
-              <li>{openHoursFri}</li>
-              <li>{openHoursSat}</li>
-              <li>{openHoursSun}</li>
-            </ul>
-          </Text>
-          }
+          {openHoursMon && (
+            <Text py="2">
+              <strong>Business Hours:</strong>
+              <HStack>
+                <VStack>
+                  <Text textAlign={'left'}>Monday:</Text>
+                  <Text>Tuesday:</Text>
+                  <Text>Wednesday:</Text>
+                  <Text>Thursday:</Text>
+                  <Text>Friday:</Text>
+                  <Text>Saturday:</Text>
+                  <Text>Sunday:</Text>
+                </VStack>
+                <VStack>
+                  <Text>{openHoursMon}</Text>
+                  <Text>{openHoursTue}</Text>
+                  <Text>{openHoursWed}</Text>
+                  <Text>{openHoursThu}</Text>
+                  <Text>{openHoursFri}</Text>
+                  <Text>{openHoursSat}</Text>
+                  <Text>{openHoursSun}</Text>
+                </VStack>
+              </HStack>
+            </Text>
+          )}
           <Text py="2">
             <strong>Address:</strong> {props.destination.location.loc_addr}
           </Text>
@@ -138,6 +132,16 @@ const DestinationDisplay = (props) => {
                 onChange={visitNoteHandler}
               />
             </FormControl>
+          </HStack>
+          <HStack mt={3} align="center">
+            <Center>
+              <Button
+                colorScheme="red"
+                onClick={() => props.removeDestination(props.index)}
+              >
+                Remove Destination
+              </Button>
+            </Center>
           </HStack>
         </CardBody>
       </Stack>

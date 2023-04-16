@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Card,
   CardBody,
@@ -7,6 +7,12 @@ import {
   Stack,
   Text,
   Heading,
+  Image,
+  HStack,
+  Box,
+  SimpleGrid,
+  GridItems,
+  GridItem,
 } from "@chakra-ui/react";
 
 const LocationCard = (props) => {
@@ -14,8 +20,6 @@ const LocationCard = (props) => {
     props.addDestination(props.location);
     props.onClose();
   };
-
-  console.log(props.location);
 
   const name = props.location.loc_name;
   const openHoursMon = props.location.loc_hours_mon;
@@ -35,40 +39,65 @@ const LocationCard = (props) => {
       variant="outline"
       mt={5}
     >
-      <Stack>
-        <CardBody>
-          <Heading size="md">{name}</Heading>
-          {openHoursMon &&
-          <Text py="2">
-            <strong>Business Hours:</strong>
-            <ul>
-              <li>{openHoursMon}</li>
-              <li>{openHoursTue}</li>
-              <li>{openHoursWed}</li>
-              <li>{openHoursThu}</li>
-              <li>{openHoursFri}</li>
-              <li>{openHoursSat}</li>
-              <li>{openHoursSun}</li>
-            </ul>
-          </Text>
-          }
-          <Text py="2">
-            <strong>Type:</strong> {type}
-          </Text>
-          <Text py="2">
-            <strong>Address:</strong> {address}
-          </Text>
-        </CardBody>
-        <CardFooter>
-          <Button
-            variant="solid"
-            colorScheme="blue"
-            onClick={selectDestination}
-          >
-            Add to Itinerary
-          </Button>
-        </CardFooter>
-      </Stack>
+      <HStack>
+        <Stack>
+          <CardBody>
+            <Heading size="md">{name}</Heading>
+            {openHoursMon && (
+              <Box py="2">
+                <Text>
+                  <strong>Business Hours:</strong>
+                </Text>
+                <HStack>
+                  <Box width={"7rem"}>
+                    <Text>Monday:</Text>
+                    <Text>Tuesday:</Text>
+                    <Text>Wednesday:</Text>
+                    <Text>Thursday:</Text>
+                    <Text>Friday:</Text>
+                    <Text>Saturday:</Text>
+                    <Text>Sunday:</Text>
+                  </Box>
+                  <Box>
+                    <Text>{openHoursMon}</Text>
+                    <Text>{openHoursTue}</Text>
+                    <Text>{openHoursWed}</Text>
+                    <Text>{openHoursThu}</Text>
+                    <Text>{openHoursFri}</Text>
+                    <Text>{openHoursSat}</Text>
+                    <Text>{openHoursSun}</Text>
+                  </Box>
+                </HStack>
+              </Box>
+            )}
+            <Text py="2">
+              <strong>Type:</strong> {type}
+            </Text>
+            <Text py="2">
+              <strong>Address:</strong> {address}
+            </Text>
+          </CardBody>
+          <CardFooter>
+            <Button
+              variant="solid"
+              colorScheme="blue"
+              onClick={selectDestination}
+            >
+              Add to Itinerary
+            </Button>
+          </CardFooter>
+        </Stack>
+        <Image
+          src={`../photos/${name}.jpg`}
+          alt={name}
+          boxSize="300px"
+          objectFit="cover"
+          border="20px"
+          onError={(e) => {
+            e.target.style.display = "none";
+          }}
+        />
+      </HStack>
     </Card>
   );
 };

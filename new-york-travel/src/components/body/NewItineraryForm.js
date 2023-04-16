@@ -43,7 +43,6 @@ const NewItineraryForm = (props) => {
         visitNote: destination.visitNote,
       };
     });
-    console.log(userId);
     let itinerary = {
       userId: userId,
       itinName: itineraryName,
@@ -132,9 +131,9 @@ const NewItineraryForm = (props) => {
 
   return (
     <Flex width="full" align="center" justifyContent="center">
-      <VStack>
+      <Box mb={10} width={["95%","30rem"]}>
         <Box m={10} textAlign="center">
-          <Heading size="3xl">Create a New Itinerary</Heading>
+          <Heading size={["2xl", "3xl"]}>Create a New Itinerary</Heading>
         </Box>
         <Box textAlign="left">
           <form>
@@ -144,7 +143,6 @@ const NewItineraryForm = (props) => {
                 <Input
                   type="text"
                   placeholder="Itinerary Name"
-                  width="30rem"
                   onChange={itineraryNameHandler}
                 />
               </FormControl>
@@ -155,7 +153,6 @@ const NewItineraryForm = (props) => {
                 <Input
                   type="text"
                   placeholder="Itinerary Description (Optional)"
-                  width="30rem"
                   onChange={itineraryDescriptionHandler}
                 />
               </FormControl>
@@ -215,7 +212,7 @@ const NewItineraryForm = (props) => {
             </Button>
           </form>
         </Box>
-      </VStack>
+      </Box>
     </Flex>
   );
 };

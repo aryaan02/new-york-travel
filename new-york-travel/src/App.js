@@ -9,9 +9,6 @@ import { ChakraProvider } from "@chakra-ui/react";
 import ItineraryDetailsPage from "./pages/ItineraryDetailsPage";
 
 function App() {
-  // const [user, setUser] = useState(null);
-  // const [loggedIn, setLoggedIn] = useState(false);
-
   return (
     <ChakraProvider>
       <HashRouter>

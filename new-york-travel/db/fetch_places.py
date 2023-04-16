@@ -1,13 +1,13 @@
 import googlemaps
 import time
 import sqlite3
-import re
 
 API_KEY = "AIzaSyD5BEu-hTs6PC3vQNum5iIPEtW6nXB5wzE"
 
 # Define the client object for Google Maps API
 client = googlemaps.Client(API_KEY)
 
+# Initialize the lists for attractions and restaurants
 attractions = []
 restaurants = []
 
@@ -55,8 +55,16 @@ for attraction in attractions:
     if attractions[1]:
         print(attraction)
         response = client.place(attraction[1])
-
-        if 'opening_hours' in response['result']:
+        # Get photo reference
+        if 'photos' in response['result'] and response['result']['photos'][0]['photo_reference']:
+            photo_ref = response['result']['photos'][0]['photo_reference']
+            photo = client.places_photo(photo_ref, max_width=1000)
+            name = attraction[0].replace("/", '')
+            with open(f'../public/photos/{name}.jpg', 'wb+') as f:
+                for line in photo:
+                    f.write(line)
+            
+        if 'opening_hours' in response['result'] and 'formatted_address' in response['result'] and 'rating' in response['result'] and 'user_ratings_total' in response['result']:
             query = "INSERT INTO locations (loc_name, loc_hours_mon, loc_hours_tue, loc_hours_wed, loc_hours_thu, loc_hours_fri, loc_hours_sat, loc_hours_sun, loc_addr, loc_type, loc_rating, loc_rating_count) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
 
             values = (response['result']['name'],

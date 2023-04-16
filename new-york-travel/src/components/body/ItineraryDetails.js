@@ -67,34 +67,24 @@ const ItineraryDetails = (props) => {
 
     // Fetch user info
     const fetchUserInfo = async () => {
-      const response = await fetch(
-        `http://localhost:5000/user-info`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ user_id: userId }),
-        }
-      );
+      const response = await fetch(`http://localhost:5000/user-info`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ user_id: userId }),
+      });
       const data = await response.json();
-      console.log(("user info result"));
-      console.log(data);
       return await data;
     };
     fetchUserInfo().then((data) => {
-      console.log(("user info result then"));
-      console.log(data);
-      console.log(data[0]["residence_city"]);
-      console.log(data[0]["residence_state"]);
-      setResidenceLocation(`${data[0]['residence_city']},${data[0]['residence_state']}`);
+      setResidenceLocation(
+        `${data[0]["residence_city"]},${data[0]["residence_state"]}`
+      );
     });
   }, [userId, id]);
 
   useEffect(() => {
-    console.log(startDate);
-    console.log(endDate);
-    console.log(residenceLocation);
     setFlightLink(
       `https://www.expedia.com/Flights-Search?flight-type=on&mode=search&trip=roundtrip&leg1=from%3A${residenceLocation}%2Cto%3ANew+York+(NYC+-+All+Airports)%2Cdeparture%3A4%2F23%2F2023TANYT&options=cabinclass%3Aeconomy&leg2=from%3ANew+York+(NYC+-+All+Airports)%2Cto%3A${residenceLocation}%2Cdeparture%3A4%2F27%2F2023TANYT&passengers=children%3A0%2Cadults%3A1%2Cseniors%3A0%2Cinfantinlap%3AY&fromDate=${`${startDate.month}%2F${startDate.day}%2F${startDate.year}`}&toDate=${`${endDate.month}%2F${endDate.day}%2F${endDate.year}`}&d1=${`${startDate.year}-${startDate.month}-${startDate.day}`}&d2=${`${startDate.year}-${startDate.month}-${startDate.day}`}`
     );
@@ -136,7 +126,7 @@ const ItineraryDetails = (props) => {
                 <strong>Location Name:</strong>
                 {dest.loc_name}
               </Heading>
-              <Text py={2}>Addrss: {dest.loc_addr}</Text>
+              <Text py={2}>Address: {dest.loc_addr}</Text>
               <Text py={2}>Visit Date: {dest.visit_date}</Text>
               <Text py={2}>Visit Start Time: {dest.visit_start_time}</Text>
               <Text py={2}>Visit End Time: {dest.visit_end_time}</Text>

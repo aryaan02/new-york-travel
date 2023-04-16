@@ -1,5 +1,12 @@
 import React, { useEffect, useState, Fragment } from "react";
-import { Flex, Box, Heading, Button, VStack } from "@chakra-ui/react";
+import {
+  Flex,
+  Box,
+  Heading,
+  Button,
+  VStack,
+  SimpleGrid,
+} from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import ItineraryDisplay from "./ItineraryDisplay";
@@ -54,30 +61,51 @@ const Account = (props) => {
 
   return (
     <Fragment>
-      {!showDetails && <Flex width="full" align="center" justifyContent="center">
-        <Box p={2}>
-          <Box m={10} textAlign="center">
-            <Heading size="3xl">Welcome, {firstName}!</Heading>
-          </Box>
-          <Box m={10} textAlign="center">
-            <Heading size="2xl">Your Itineraries</Heading>
-            <Button colorScheme="blue" mt={10} onClick={navigateNewItinerary}>
-              Add New Itinerary
-            </Button>
-            <VStack mt={6}>
-              {itineraries.map((itinerary,index) => (
-                <ItineraryDisplay
-                  key={index}
-                  itinerary={itinerary}
-                  setShowDetails={showDetailsHandler}
-                  setItinId={itinIdHandler}
-                />
-              ))}
-            </VStack>
-          </Box>
-        </Box>
-      </Flex>}
-      {showDetails && <ItineraryDetails itinId={itinId} setShowDetails={setShowDetails} />}
+      {!showDetails && (
+        <Flex width="full" align="center" justifyContent="center">
+          <VStack p={2}>
+            <Box
+              m={10}
+              p={3}
+              textAlign="center"
+              borderWidth="3px"
+              borderColor="#4299E1"
+              borderRadius="1rem"
+            >
+              <Heading size="3xl">Welcome, {firstName}!</Heading>
+            </Box>
+            <Box m={10} textAlign="center">
+              <Heading size="2xl">Your Itineraries</Heading>
+              <Button colorScheme="blue" mt={10} onClick={navigateNewItinerary}>
+                Add New Itinerary
+              </Button>
+              {itineraries.length > 0 && (
+                <SimpleGrid
+                  columns={[1, 2, 2, 4]}
+                  spacing={10}
+                  mt={6}
+                  p={3}
+                  borderWidth="3px"
+                  borderRadius="1rem"
+                  borderColor="#4299E1"
+                >
+                  {itineraries.map((itinerary, index) => (
+                    <ItineraryDisplay
+                      key={index}
+                      itinerary={itinerary}
+                      setShowDetails={showDetailsHandler}
+                      setItinId={itinIdHandler}
+                    />
+                  ))}
+                </SimpleGrid>
+              )}
+            </Box>
+          </VStack>
+        </Flex>
+      )}
+      {showDetails && (
+        <ItineraryDetails itinId={itinId} setShowDetails={setShowDetails} />
+      )}
     </Fragment>
   );
 };

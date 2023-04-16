@@ -25,7 +25,13 @@ const LocationModal = (props) => {
       <Button width="full" colorScheme="teal" onClick={onOpen}>
         Add Destination
       </Button>
-      <Modal isOpen={isOpen} onClose={onClose} isCentered>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        scrollBehavior="inside"
+        size="4xl"
+        isCentered
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>Select a Location</ModalHeader>

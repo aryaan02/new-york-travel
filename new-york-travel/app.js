@@ -1,6 +1,7 @@
 const express = require("express");
 const sqlite3 = require("sqlite3");
 const cors = require("cors");
+const path = require("path");
 const bodyParser = require("body-parser");
 const dbCmd = require("./db/db_cmd.js");
 
@@ -364,7 +365,7 @@ const userQuery = async (user_id) => {
   return result;
 };
 
-// Handle request to get uer info
+// Handle request to get user info
 app.post("/user-info", async (req, res) => {
   // console.log(req.param.user_id);
   console.log(req.body.user_id)
