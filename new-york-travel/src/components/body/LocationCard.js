@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Card,
   CardBody,
@@ -10,9 +10,6 @@ import {
   Image,
   HStack,
   Box,
-  SimpleGrid,
-  GridItems,
-  GridItem,
 } from "@chakra-ui/react";
 
 const LocationCard = (props) => {
