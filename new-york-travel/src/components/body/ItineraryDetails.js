@@ -9,7 +9,11 @@ import {
   Button,
 } from "@chakra-ui/react";
 import Cookies from "js-cookie";
-import { VerticalTimeline, VerticalTimelineElement } from "react-vertical-timeline-component";
+import {
+  VerticalTimeline,
+  VerticalTimelineElement,
+} from "react-vertical-timeline-component";
+import 'react-vertical-timeline-component/style.min.css';
 
 const ItineraryDetails = (props) => {
   const [itinDetails, setItinDetails] = useState({});
@@ -104,38 +108,71 @@ const ItineraryDetails = (props) => {
         width="full"
         textAlign="center"
       >
-          <Stack width="full">
-            <CardBody>
-              <Heading size="md">{itinDetails.itin_name}</Heading>
-              <Text py={2}>{itinDetails.itin_description}</Text>
-              <Text py={2}>
-                <strong>Start Date: </strong>
-                {itinDetails.start_date}
-              </Text>
-              <Text py={2}>
-                <strong>End Date: </strong>
-                {itinDetails.end_date}
-              </Text>
-            </CardBody>
-          </Stack>
+        <Stack width="full">
+          <CardBody>
+            <Heading size="md">{itinDetails.itin_name}</Heading>
+            <Text py={2}>{itinDetails.itin_description}</Text>
+            <Text py={2}>
+              <strong>Start Date: </strong>
+              {itinDetails.start_date}
+            </Text>
+            <Text py={2}>
+              <strong>End Date: </strong>
+              {itinDetails.end_date}
+            </Text>
+          </CardBody>
+        </Stack>
       </Card>
       <Button onClick={flightButtonHandler}>Order Flight</Button>
-      {itinDetails.hasOwnProperty("dest_list") &&
-        itinDetails.dest_list.map((dest, index) => (
-          <Card key={index}>
-            <CardBody>
-              <Heading size="md">
-                <strong>Location Name:</strong>
+      {/*itinDetails.hasOwnProperty("dest_list") &&
+          itinDetails.dest_list.map((dest, index) => (
+            { <Card key={index}>
+              <CardBody>
+                <Heading size="md">
+                  <strong>Location Name:</strong>
+                  {dest.loc_name}
+                </Heading>
+                <Text py={2}>Address: {dest.loc_addr}</Text>
+                <Text py={2}>Visit Date: {dest.visit_date}</Text>
+                <Text py={2}>Visit Start Time: {dest.visit_start_time}</Text>
+                <Text py={2}>Visit End Time: {dest.visit_end_time}</Text>
+                <Text py={2}>Visit Note: {dest.visit_note}</Text>
+              </CardBody>
+            </Card> }
+          ))*/}
+      {itinDetails.hasOwnProperty("dest_list") && (
+        <VerticalTimeline
+          className="vertical-timeline-element--work"
+          contentStyle={{ background: "rgb(33, 150, 243)", color: "#fff" }}
+          contentArrowStyle={{ borderRight: "7px solid  rgb(33, 150, 243)" }}
+          date="2011 - present"
+          iconStyle={{ background: "rgb(33, 150, 243)", color: "#fff" }}
+        >
+          {itinDetails.dest_list.map((dest, index) => (
+            <VerticalTimelineElement
+              key={index}
+              className="vertical-timeline-element--work"
+              contentStyle={{ background: "rgb(33, 150, 243)", color: "#fff" }}
+              contentArrowStyle={{
+                borderRight: "7px solid  rgb(33, 150, 243)",
+              }}
+              date={dest.visit_date}
+              iconStyle={{ background: "rgb(33, 150, 243)", color: "#fff" }}
+            >
+              <h3 className="vertical-timeline-element-title">
                 {dest.loc_name}
-              </Heading>
-              <Text py={2}>Address: {dest.loc_addr}</Text>
-              <Text py={2}>Visit Date: {dest.visit_date}</Text>
-              <Text py={2}>Visit Start Time: {dest.visit_start_time}</Text>
-              <Text py={2}>Visit End Time: {dest.visit_end_time}</Text>
-              <Text py={2}>Visit Note: {dest.visit_note}</Text>
-            </CardBody>
-          </Card>
-        ))}
+              </h3>
+              <h4 className="vertical-timeline-element-subtitle">
+                {dest.loc_addr}
+              </h4>
+              <p>
+                {dest.visit_start_time} - {dest.visit_end_time}
+              </p>
+              <p>{dest.visit_note}</p>
+            </VerticalTimelineElement>
+          ))}
+        </VerticalTimeline>
+      )}
       <Button colorScheme="red" size="sm" onClick={showDetailsHandler}>
         Back
       </Button>

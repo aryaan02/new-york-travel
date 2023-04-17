@@ -220,6 +220,7 @@ const NewItineraryForm = (props) => {
               width="full"
               mt={6}
               onClick={submitItinerary}
+              type="submit"
             >
               Create Itinerary
             </Button>

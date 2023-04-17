@@ -58,155 +58,11 @@ const DestinationDisplay = (props) => {
   };
 
   const visitStartTimeHandler = (e) => {
-    let visitDateObject = new Date(visitDate);
-    let visitDay = visitDateObject.getDay();
-    let startTime = Date.parse("2011-10-10T" + e.target.value);
-    if (dayArray[visitDay] === "Closed") {
-      setError("Location closed on selected day.");
-      return;
-    } else if (dayArray[visitDay].includes(",")) {
-      // Check multiple opening time ranges
-      let validFlag = false;
-      let openRanges = dayArray[visitDay].split(",");
-      openRanges.map((x) => {
-        console.log("Range: ", x);
-        let range = x.split(" – ");
-        let start = Date.parse(
-          "2011-10-10:" + moment(range[0], ["h:mm A"]).format("HH:mm")
-        );
-        let end = Date.parse(
-          "2011-10-10:" + moment(range[1], ["h:mm A"]).format("HH:mm")
-        );
-        let midnight = Date.parse(
-          "2011-10-10:" + moment('12:00 AM', ["h:mm A"]).format("HH:mm")
-        );
-        if (end < start) {
-          end = Date.parse(
-            "2011-10-11:" + moment(range[1], ["h:mm A"]).format("HH:mm")
-          );
-          if (startTime > midnight) {
-            startTime = Date.parse("2011-10-11T" + e.target.value);
-          }
-        }
-        if (startTime >= start && startTime <= end) {
-          validFlag = true;
-        }
-        return true;
-      });
-      if (validFlag) {
-        setVisitStartTime(e.target.value);
-        setError("")
-      } else {
-        setError("Invalid start time - not in opening hours");
-      }
-    } else if (dayArray[visitDay].includes(" – ")) {
-      // Check single time range
-      let range = dayArray[visitDay].split(" – ");
-      let start = Date.parse(
-        "2011-10-10:" + moment(range[0], ["h:mm A"]).format("HH:mm")
-      );
-      let end = Date.parse(
-        "2011-10-10:" + moment(range[1], ["h:mm A"]).format("HH:mm")
-      );
-      let midnight = Date.parse(
-        "2011-10-10:" + moment('12:00 AM', ["h:mm A"]).format("HH:mm")
-      );
-      if (end < start) {
-        end = Date.parse(
-          "2011-10-11:" + moment(range[1], ["h:mm A"]).format("HH:mm")
-        );
-        if (startTime > midnight) {
-          startTime = Date.parse("2011-10-11T" + e.target.value);
-        }
-      }
-      console.log(start);
-      console.log(end);
-      if (startTime >= start && startTime <= end) {
-        setVisitStartTime(e.target.value);
-        setError("")
-      } else {
-        setError("Invalid start time - not in opening hours");
-      }
-    } else {
-      setVisitStartTime(e.target.value);
-      setError("");
-    }
+    setVisitStartTime(e.target.value);
   };
 
   const visitEndTimeHandler = (e) => {
-    let visitDateObject = new Date(visitDate);
-    let visitDay = visitDateObject.getDay();
-    let endTime = Date.parse("2011-10-10T" + e.target.value);
-    if (dayArray[visitDay] === "Closed") {
-      setError("Location closed on selected day.");
-      return;
-    } else if (dayArray[visitDay].includes(",")) {
-      // Check multiple opening time ranges
-      let validFlag = false;
-      let openRanges = dayArray[visitDay].split(",");
-      openRanges.map((x) => {
-        console.log("Range: ", x);
-        let range = x.split(" – ");
-        let start = Date.parse(
-          "2011-10-10:" + moment(range[0], ["h:mm A"]).format("HH:mm")
-        );
-        let end = Date.parse(
-          "2011-10-10:" + moment(range[1], ["h:mm A"]).format("HH:mm")
-        );
-        let midnight = Date.parse(
-          "2011-10-10:" + moment('12:00 AM', ["h:mm A"]).format("HH:mm")
-        );
-        if (end < start) {
-          end = Date.parse(
-            "2011-10-11:" + moment(range[1], ["h:mm A"]).format("HH:mm")
-          );
-          if (endTime > midnight) {
-            endTime = Date.parse("2011-10-11T" + e.target.value);
-          }
-        }
-        if (endTime >= start && endTime <= end) {
-          validFlag = true;
-        }
-        return true;
-      });
-      if (validFlag) {
-        setVisitStartTime(e.target.value);
-        setError("")
-      } else {
-        setError("Invalid end time - not in opening hours");
-      }
-    } else if (dayArray[visitDay].includes(" – ")) {
-      // Check single time range
-      let range = dayArray[visitDay].split(" – ");
-      let start = Date.parse(
-        "2011-10-10:" + moment(range[0], ["h:mm A"]).format("HH:mm")
-      );
-      let end = Date.parse(
-        "2011-10-10:" + moment(range[1], ["h:mm A"]).format("HH:mm")
-      );
-      let midnight = Date.parse(
-        "2011-10-10:" + moment('12:00 AM', ["h:mm A"]).format("HH:mm")
-      );
-      if (end < start) {
-        end = Date.parse(
-          "2011-10-11:" + moment(range[1], ["h:mm A"]).format("HH:mm")
-        );
-        if (endTime > midnight) {
-          endTime = Date.parse("2011-10-11T" + e.target.value);
-        }
-      }
-      console.log(start);
-      console.log(end);
-      if (endTime >= start && endTime <= end) {
-        setVisitStartTime(e.target.value);
-        setError("")
-      } else {
-        setError("Invalid end time - not in opening hours");
-      }
-    } else {
-      setVisitStartTime(e.target.value);
-      setError("");
-    }
+    setVisitEndTime(e.target.value);
   };
 
   const visitNoteHandler = (e) => {
@@ -227,7 +83,7 @@ const DestinationDisplay = (props) => {
       visitNote: visitNote,
     };
     updateDestination(localDestination, index);
-  }, [visitDate, visitStartTime, visitEndTime, visitNote]);
+  }, [visitDate, visitStartTime, visitEndTime, visitNote, index, updateDestination, destination]);
 
   return (
     <Card
