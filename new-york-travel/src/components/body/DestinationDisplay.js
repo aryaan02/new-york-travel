@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import {
   Card,
   CardBody,
-  Stack,
   Text,
   Heading,
   HStack,
@@ -15,7 +14,6 @@ import {
 } from "@chakra-ui/react";
 
 const DestinationDisplay = (props) => {
-  const moment = require("moment");
 
   const updateDestination = props.updateDestination;
   const index = props.index;
@@ -34,16 +32,6 @@ const DestinationDisplay = (props) => {
   const openHoursFri = props.destination.location.loc_hours_fri;
   const openHoursSat = props.destination.location.loc_hours_sat;
   const openHoursSun = props.destination.location.loc_hours_sun;
-
-  let dayArray = [
-    openHoursMon,
-    openHoursTue,
-    openHoursWed,
-    openHoursThu,
-    openHoursFri,
-    openHoursSat,
-    openHoursSun,
-  ];
 
   const visitDateHandler = (e) => {
     let visitDate = new Date(e.target.value).getTime();
