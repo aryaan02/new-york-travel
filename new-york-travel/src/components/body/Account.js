@@ -81,7 +81,7 @@ const Account = (props) => {
               </Button>
               {itineraries.length > 0 && (
                 <SimpleGrid
-                  columns={[1, 2, 2, 4]}
+                  columns={{ base: 2 }}
                   spacing={10}
                   mt={6}
                   p={3}
@@ -97,6 +97,7 @@ const Account = (props) => {
                       setItinId={itinIdHandler}
                     />
                   ))}
+                  
                 </SimpleGrid>
               )}
             </Box>

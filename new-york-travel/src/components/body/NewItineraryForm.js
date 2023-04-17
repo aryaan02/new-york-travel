@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Flex,
   Box,
@@ -9,6 +9,7 @@ import {
   HStack,
   Input,
   VStack,
+  Text,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import LocationModal from "./LocationModal";
@@ -22,6 +23,7 @@ const NewItineraryForm = (props) => {
   const [itineraryDescription, setItineraryDescription] = useState(null);
   const [itineraryStartDate, setItineraryStartDate] = useState(null);
   const [itineraryEndDate, setItineraryEndDate] = useState(null);
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,6 +36,13 @@ const NewItineraryForm = (props) => {
   const userId = Cookies.get("user_id");
 
   const submitItinerary = () => {
+    let startDate = new Date(itineraryStartDate).getTime();
+    let endDate = new Date(itineraryEndDate).getTime();
+    if (startDate > endDate) {
+      setError("Start date cannot be after the end date.");
+      return;
+    }
+
     let destinationArray = selectedDestinations.map((destination) => {
       return {
         locationId: destination.location.loc_id,
@@ -81,13 +90,22 @@ const NewItineraryForm = (props) => {
   };
 
   // Set destination object at index to destination
-  const updateDestination = (destination, index) => {
+  const updateDestination = useCallback(
+    (destination, index) => {
+      setSelectedDestinations([
+        ...selectedDestinations.slice(0, index),
+        destination,
+        ...selectedDestinations.slice(index + 1),
+      ]);
+    },
+    [selectedDestinations]
+  );
+
+  const removeDestination = (index) => {
     setSelectedDestinations([
       ...selectedDestinations.slice(0, index),
-      destination,
       ...selectedDestinations.slice(index + 1),
     ]);
-    console.log(selectedDestinations);
   };
 
   // Form Handlers
@@ -131,7 +149,7 @@ const NewItineraryForm = (props) => {
 
   return (
     <Flex width="full" align="center" justifyContent="center">
-      <Box mb={10} width={["95%","30rem"]}>
+      <Box mb={10} width={["95%", "30rem"]}>
         <Box m={10} textAlign="center">
           <Heading size={["2xl", "3xl"]}>Create a New Itinerary</Heading>
         </Box>
@@ -181,9 +199,13 @@ const NewItineraryForm = (props) => {
                   key={index}
                   destination={destination}
                   updateDestination={updateDestination}
+                  removeDestination={removeDestination}
                   index={index}
+                  itinStartDate={itineraryStartDate}
+                  itinEndDate={itineraryEndDate}
                 />
               ))}
+              {error && <Text color="red.500">{error}</Text>}
             </VStack>
             <HStack mt={6}>
               <FormControl isRequired>
@@ -198,7 +220,6 @@ const NewItineraryForm = (props) => {
               width="full"
               mt={6}
               onClick={submitItinerary}
-              type="submit"
             >
               Create Itinerary
             </Button>

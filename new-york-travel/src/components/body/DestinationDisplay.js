@@ -15,11 +15,18 @@ import {
 } from "@chakra-ui/react";
 
 const DestinationDisplay = (props) => {
+  const moment = require("moment");
+
+  const updateDestination = props.updateDestination;
+  const index = props.index;
+  const destination = props.destination;
+
   const [visitDate, setVisitDate] = useState(null);
   const [visitStartTime, setVisitStartTime] = useState(null);
   const [visitEndTime, setVisitEndTime] = useState(null);
   const [visitNote, setVisitNote] = useState(null);
-  console.log(props);
+  const [error, setError] = useState("");
+
   const openHoursMon = props.destination.location.loc_hours_mon;
   const openHoursTue = props.destination.location.loc_hours_tue;
   const openHoursWed = props.destination.location.loc_hours_wed;
@@ -28,24 +35,190 @@ const DestinationDisplay = (props) => {
   const openHoursSat = props.destination.location.loc_hours_sat;
   const openHoursSun = props.destination.location.loc_hours_sun;
 
+  let dayArray = [
+    openHoursMon,
+    openHoursTue,
+    openHoursWed,
+    openHoursThu,
+    openHoursFri,
+    openHoursSat,
+    openHoursSun,
+  ];
+
   const visitDateHandler = (e) => {
-    setVisitDate(e.target.value);
+    let visitDate = new Date(e.target.value).getTime();
+    let tripStartDay = new Date(props.itinStartDate).getTime();
+    let tripEndDay = new Date(props.itinEndDate).getTime();
+    if (visitDate < tripStartDay || visitDate > tripEndDay) {
+      setError("Visit date must be between itinerary start and end date.");
+    } else {
+      setVisitDate(e.target.value);
+      setError("")
+    }
   };
 
   const visitStartTimeHandler = (e) => {
-    setVisitStartTime(e.target.value);
+    let visitDateObject = new Date(visitDate);
+    let visitDay = visitDateObject.getDay();
+    let startTime = Date.parse("2011-10-10T" + e.target.value);
+    if (dayArray[visitDay] === "Closed") {
+      setError("Location closed on selected day.");
+      return;
+    } else if (dayArray[visitDay].includes(",")) {
+      // Check multiple opening time ranges
+      let validFlag = false;
+      let openRanges = dayArray[visitDay].split(",");
+      openRanges.map((x) => {
+        console.log("Range: ", x);
+        let range = x.split(" – ");
+        let start = Date.parse(
+          "2011-10-10:" + moment(range[0], ["h:mm A"]).format("HH:mm")
+        );
+        let end = Date.parse(
+          "2011-10-10:" + moment(range[1], ["h:mm A"]).format("HH:mm")
+        );
+        let midnight = Date.parse(
+          "2011-10-10:" + moment('12:00 AM', ["h:mm A"]).format("HH:mm")
+        );
+        if (end < start) {
+          end = Date.parse(
+            "2011-10-11:" + moment(range[1], ["h:mm A"]).format("HH:mm")
+          );
+          if (startTime > midnight) {
+            startTime = Date.parse("2011-10-11T" + e.target.value);
+          }
+        }
+        if (startTime >= start && startTime <= end) {
+          validFlag = true;
+        }
+        return true;
+      });
+      if (validFlag) {
+        setVisitStartTime(e.target.value);
+        setError("")
+      } else {
+        setError("Invalid start time - not in opening hours");
+      }
+    } else if (dayArray[visitDay].includes(" – ")) {
+      // Check single time range
+      let range = dayArray[visitDay].split(" – ");
+      let start = Date.parse(
+        "2011-10-10:" + moment(range[0], ["h:mm A"]).format("HH:mm")
+      );
+      let end = Date.parse(
+        "2011-10-10:" + moment(range[1], ["h:mm A"]).format("HH:mm")
+      );
+      let midnight = Date.parse(
+        "2011-10-10:" + moment('12:00 AM', ["h:mm A"]).format("HH:mm")
+      );
+      if (end < start) {
+        end = Date.parse(
+          "2011-10-11:" + moment(range[1], ["h:mm A"]).format("HH:mm")
+        );
+        if (startTime > midnight) {
+          startTime = Date.parse("2011-10-11T" + e.target.value);
+        }
+      }
+      console.log(start);
+      console.log(end);
+      if (startTime >= start && startTime <= end) {
+        setVisitStartTime(e.target.value);
+        setError("")
+      } else {
+        setError("Invalid start time - not in opening hours");
+      }
+    } else {
+      setVisitStartTime(e.target.value);
+      setError("");
+    }
   };
 
   const visitEndTimeHandler = (e) => {
-    setVisitEndTime(e.target.value);
+    let visitDateObject = new Date(visitDate);
+    let visitDay = visitDateObject.getDay();
+    let endTime = Date.parse("2011-10-10T" + e.target.value);
+    if (dayArray[visitDay] === "Closed") {
+      setError("Location closed on selected day.");
+      return;
+    } else if (dayArray[visitDay].includes(",")) {
+      // Check multiple opening time ranges
+      let validFlag = false;
+      let openRanges = dayArray[visitDay].split(",");
+      openRanges.map((x) => {
+        console.log("Range: ", x);
+        let range = x.split(" – ");
+        let start = Date.parse(
+          "2011-10-10:" + moment(range[0], ["h:mm A"]).format("HH:mm")
+        );
+        let end = Date.parse(
+          "2011-10-10:" + moment(range[1], ["h:mm A"]).format("HH:mm")
+        );
+        let midnight = Date.parse(
+          "2011-10-10:" + moment('12:00 AM', ["h:mm A"]).format("HH:mm")
+        );
+        if (end < start) {
+          end = Date.parse(
+            "2011-10-11:" + moment(range[1], ["h:mm A"]).format("HH:mm")
+          );
+          if (endTime > midnight) {
+            endTime = Date.parse("2011-10-11T" + e.target.value);
+          }
+        }
+        if (endTime >= start && endTime <= end) {
+          validFlag = true;
+        }
+        return true;
+      });
+      if (validFlag) {
+        setVisitStartTime(e.target.value);
+        setError("")
+      } else {
+        setError("Invalid end time - not in opening hours");
+      }
+    } else if (dayArray[visitDay].includes(" – ")) {
+      // Check single time range
+      let range = dayArray[visitDay].split(" – ");
+      let start = Date.parse(
+        "2011-10-10:" + moment(range[0], ["h:mm A"]).format("HH:mm")
+      );
+      let end = Date.parse(
+        "2011-10-10:" + moment(range[1], ["h:mm A"]).format("HH:mm")
+      );
+      let midnight = Date.parse(
+        "2011-10-10:" + moment('12:00 AM', ["h:mm A"]).format("HH:mm")
+      );
+      if (end < start) {
+        end = Date.parse(
+          "2011-10-11:" + moment(range[1], ["h:mm A"]).format("HH:mm")
+        );
+        if (endTime > midnight) {
+          endTime = Date.parse("2011-10-11T" + e.target.value);
+        }
+      }
+      console.log(start);
+      console.log(end);
+      if (endTime >= start && endTime <= end) {
+        setVisitStartTime(e.target.value);
+        setError("")
+      } else {
+        setError("Invalid end time - not in opening hours");
+      }
+    } else {
+      setVisitStartTime(e.target.value);
+      setError("");
+    }
   };
 
   const visitNoteHandler = (e) => {
     setVisitNote(e.target.value);
   };
 
+  const removeDestinationHandler = () => {
+    props.removeDestination(index);
+  };
+
   useEffect(() => {
-    let localDestination = props.destination;
+    let localDestination = destination;
     localDestination = {
       ...localDestination,
       visitDate: visitDate,
@@ -53,8 +226,8 @@ const DestinationDisplay = (props) => {
       visitEndTime: visitEndTime,
       visitNote: visitNote,
     };
-    props.updateDestination(localDestination, props.index);
-  }, [props, visitDate, visitStartTime, visitEndTime, visitNote]);
+    updateDestination(localDestination, index);
+  }, [visitDate, visitStartTime, visitEndTime, visitNote]);
 
   return (
     <Card
@@ -63,7 +236,7 @@ const DestinationDisplay = (props) => {
       variant="outline"
       width="full"
     >
-      <Stack width="full">
+      <VStack width="full">
         <CardBody>
           <Heading size="md">{props.destination.location.loc_name}</Heading>
 
@@ -72,7 +245,7 @@ const DestinationDisplay = (props) => {
               <strong>Business Hours:</strong>
               <HStack>
                 <VStack>
-                  <Text textAlign={'left'}>Monday:</Text>
+                  <Text textAlign={"left"}>Monday:</Text>
                   <Text>Tuesday:</Text>
                   <Text>Wednesday:</Text>
                   <Text>Thursday:</Text>
@@ -133,18 +306,21 @@ const DestinationDisplay = (props) => {
               />
             </FormControl>
           </HStack>
-          <HStack mt={3} align="center">
-            <Center>
-              <Button
-                colorScheme="red"
-                onClick={() => props.removeDestination(props.index)}
-              >
-                Remove Destination
-              </Button>
-            </Center>
-          </HStack>
+          {error && (
+            <Text mt={2} color="red">
+              {error}
+            </Text>
+          )}
+          <Center mt={6}>
+            <Button
+              colorScheme="red"
+              onClick={removeDestinationHandler}
+            >
+              Remove Destination
+            </Button>
+          </Center>
         </CardBody>
-      </Stack>
+      </VStack>
     </Card>
   );
 };

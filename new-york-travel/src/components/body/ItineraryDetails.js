@@ -9,6 +9,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import Cookies from "js-cookie";
+import { VerticalTimeline, VerticalTimelineElement } from "react-vertical-timeline-component";
 
 const ItineraryDetails = (props) => {
   const [itinDetails, setItinDetails] = useState({});
@@ -101,21 +102,22 @@ const ItineraryDetails = (props) => {
         overflow="hidden"
         variant="outline"
         width="full"
+        textAlign="center"
       >
-        <Stack width="full">
-          <CardBody>
-            <Heading size="md">{itinDetails.itin_name}</Heading>
-            <Text py={2}>{itinDetails.itin_description}</Text>
-            <Text py={2}>
-              <strong>Start Date: </strong>
-              {itinDetails.start_date}
-            </Text>
-            <Text py={2}>
-              <strong>End Date: </strong>
-              {itinDetails.end_date}
-            </Text>
-          </CardBody>
-        </Stack>
+          <Stack width="full">
+            <CardBody>
+              <Heading size="md">{itinDetails.itin_name}</Heading>
+              <Text py={2}>{itinDetails.itin_description}</Text>
+              <Text py={2}>
+                <strong>Start Date: </strong>
+                {itinDetails.start_date}
+              </Text>
+              <Text py={2}>
+                <strong>End Date: </strong>
+                {itinDetails.end_date}
+              </Text>
+            </CardBody>
+          </Stack>
       </Card>
       <Button onClick={flightButtonHandler}>Order Flight</Button>
       {itinDetails.hasOwnProperty("dest_list") &&

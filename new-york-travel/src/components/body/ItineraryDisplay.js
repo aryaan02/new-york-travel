@@ -36,6 +36,7 @@ const ItineraryDisplay = (props) => {
       variant="outline"
       width={[ "18rem", "15rem" ]}
       height="15rem"
+      m={0}
     >
       <Stack width="full">
         <CardBody>
