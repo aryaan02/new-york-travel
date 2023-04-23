@@ -1,14 +1,11 @@
-import { Fragment } from "react";
 import NewItineraryForm from "../components/body/NewItineraryForm";
-import NavBar from "../components/header/NavBar";
+import Styler from "../components/UI/Styler";
 
 const LoginPage = (props) => {
-
   return (
-    <Fragment>
-      <NavBar/>
+    <Styler innerHeight={"fit-content"} includeNavBar={true}>
       <NewItineraryForm />
-    </Fragment>
+    </Styler>
   );
 };
 

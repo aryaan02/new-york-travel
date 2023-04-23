@@ -5,9 +5,9 @@ import {
   Stack,
   Text,
   Heading,
-  Button,
   Box,
 } from "@chakra-ui/react";
+import ButtonStyler from "../UI/ButtonStyler";
 
 const ItineraryDisplay = (props) => {
   const navigateItineraryDetails = () => {
@@ -35,8 +35,11 @@ const ItineraryDisplay = (props) => {
       overflow="hidden"
       variant="outline"
       width={[ "18rem", "15rem" ]}
-      height="15rem"
+      height="fit-content"
       m={0}
+      bg="#244070DD"
+      border="solid 3px #4460D099"
+      color="#FDFDF0"
     >
       <Stack width="full">
         <CardBody>
@@ -52,14 +55,13 @@ const ItineraryDisplay = (props) => {
             <strong>End Date: </strong>
             {props.itinerary.end_date}
           </Text>
-          <Button
-            colorScheme="blue"
+          <ButtonStyler
             size="sm"
             mt="1rem"
             onClick={navigateItineraryDetails}
           >
             View Details
-          </Button>
+          </ButtonStyler>
         </CardBody>
       </Stack>
     </Card>

@@ -1,12 +1,11 @@
 import React from "react";
-import { Button } from "@chakra-ui/react";
+import ButtonStyler from "../UI/ButtonStyler";
 import { useNavigate } from "react-router-dom";
 import NavBarContainer from "./NavBarContainer";
 import Logo from "./Logo";
 import Cookies from "js-cookie";
 
 const NavBar = (props) => {
-  
   const navigate = useNavigate();
 
   const navigateLogin = () => {
@@ -18,9 +17,9 @@ const NavBar = (props) => {
   return (
     <NavBarContainer>
       <Logo />
-      <Button colorScheme="twitter" onClick={navigateLogin}>
+      <ButtonStyler onClick={navigateLogin}>
         Log Out
-      </Button>
+      </ButtonStyler>
     </NavBarContainer>
   );
 };

@@ -1,14 +1,17 @@
 import Header from "../components/header/Header";
-import { Fragment } from "react";
 import LoginForm from "../components/body/LoginForm";
+import Styler from "../components/UI/Styler";
 
 const LoginPage = (props) => {
-
   return (
-    <Fragment>
+    <Styler innerHeight={"fit-content"} includeNavBar={false}>
       <Header />
-      <LoginForm loggedIn={props.loggedIn} setUser={props.setUser} setLoggedIn={props.setLoggedIn} />
-    </Fragment>
+      <LoginForm
+        loggedIn={props.loggedIn}
+        setUser={props.setUser}
+        setLoggedIn={props.setLoggedIn}
+      />
+    </Styler>
   );
 };
 

@@ -14,6 +14,7 @@ import {
   VerticalTimelineElement,
 } from "react-vertical-timeline-component";
 import 'react-vertical-timeline-component/style.min.css';
+import ButtonStyler from "../UI/ButtonStyler";
 
 const ItineraryDetails = (props) => {
   const [itinDetails, setItinDetails] = useState({});
@@ -123,7 +124,7 @@ const ItineraryDetails = (props) => {
           </CardBody>
         </Stack>
       </Card>
-      <Button onClick={flightButtonHandler}>Order Flight</Button>
+      <ButtonStyler colorScheme="yellow" onClick={flightButtonHandler}>Order Flight</ButtonStyler>
       {/*itinDetails.hasOwnProperty("dest_list") &&
           itinDetails.dest_list.map((dest, index) => (
             { <Card key={index}>
@@ -173,7 +174,7 @@ const ItineraryDetails = (props) => {
           ))}
         </VerticalTimeline>
       )}
-      <Button colorScheme="red" size="sm" onClick={showDetailsHandler}>
+      <Button colorScheme="red" onClick={showDetailsHandler}>
         Back
       </Button>
     </VStack>

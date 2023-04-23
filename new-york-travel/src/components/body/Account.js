@@ -3,14 +3,15 @@ import {
   Flex,
   Box,
   Heading,
-  Button,
   VStack,
   SimpleGrid,
+  Text,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import ItineraryDisplay from "./ItineraryDisplay";
 import ItineraryDetails from "./ItineraryDetails";
+import ButtonStyler from "../UI/ButtonStyler";
 
 const Account = (props) => {
   const [itineraries, setItineraries] = useState([]);
@@ -21,9 +22,6 @@ const Account = (props) => {
   // let userInfo = props.userInfo;
   let userId = Cookies.get("user_id");
   let firstName = Cookies.get("first_name");
-  let lastName = Cookies.get("last_name");
-  let residenceCity = Cookies.get("residence_city");
-  let residenceState = Cookies.get("residence_state");
 
   const logged_in = Cookies.get("logged_in");
 
@@ -68,26 +66,22 @@ const Account = (props) => {
               m={10}
               p={3}
               textAlign="center"
-              borderWidth="3px"
-              borderColor="#4299E1"
-              borderRadius="1rem"
             >
               <Heading size="3xl">Welcome, {firstName}!</Heading>
             </Box>
             <Box m={10} textAlign="center">
-              <Heading size="2xl">Your Itineraries</Heading>
-              <Button colorScheme="blue" mt={10} onClick={navigateNewItinerary}>
+              <Text fontSize={45}>Your Itineraries</Text>
+              <ButtonStyler mt={10} onClick={navigateNewItinerary}>
                 Add New Itinerary
-              </Button>
+              </ButtonStyler>
               {itineraries.length > 0 && (
                 <SimpleGrid
-                  columns={{ base: 2 }}
-                  spacing={10}
+                  columns={[1,1,1,2]}
+                  spacing={[10]}
                   mt={6}
                   p={3}
-                  borderWidth="3px"
                   borderRadius="1rem"
-                  borderColor="#4299E1"
+                  justifyItems="center"
                 >
                   {itineraries.map((itinerary, index) => (
                     <ItineraryDisplay

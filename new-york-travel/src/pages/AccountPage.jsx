@@ -1,12 +1,13 @@
 import { Fragment } from "react";
 import Account from "../components/body/Account";
-import NavBar from "../components/header/NavBar";
+import Styler from "../components/UI/Styler";
 
 const AccountPage = (props) => {
   return (
     <Fragment>
-      <NavBar setLoggedIn={props.setLoggedIn} />
-      <Account loggedIn={props.loggedIn} userInfo={props.userInfo} />
+      <Styler innerHeight={"fit-content"} includeNavBar={true}>
+        <Account loggedIn={props.loggedIn} userInfo={props.userInfo} />
+      </Styler>
     </Fragment>
   );
 };

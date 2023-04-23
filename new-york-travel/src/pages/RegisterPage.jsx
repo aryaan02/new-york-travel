@@ -1,13 +1,13 @@
 import Header from "../components/header/Header";
-import { Fragment } from "react";
 import RegisterForm from "../components/body/RegisterForm";
+import Styler from "../components/UI/Styler";
 
 const RegisterPage = () => {
   return (
-    <Fragment>
+    <Styler innerHeight={"fit-content"} includeNavBar={false}>
       <Header />
       <RegisterForm />
-    </Fragment>
+    </Styler>
   );
 };
 

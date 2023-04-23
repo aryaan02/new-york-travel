@@ -8,10 +8,10 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  Button,
   useDisclosure,
 } from "@chakra-ui/react";
 import LocationCard from "./LocationCard";
+import ButtonStyler from "../UI/ButtonStyler";
 
 const LocationModal = (props) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -22,9 +22,9 @@ const LocationModal = (props) => {
 
   return (
     <>
-      <Button width="full" colorScheme="teal" onClick={onOpen}>
+      <ButtonStyler width="full" onClick={onOpen}>
         Add Destination
-      </Button>
+      </ButtonStyler>
       <Modal
         isOpen={isOpen}
         onClose={onClose}
@@ -47,9 +47,9 @@ const LocationModal = (props) => {
             ))}
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="red" mr={3} onClick={onClose}>
+            <ButtonStyler mr={3} onClick={onClose}>
               Close
-            </Button>
+            </ButtonStyler>
           </ModalFooter>
         </ModalContent>
       </Modal>

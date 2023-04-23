@@ -8,9 +8,9 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Button,
   Center,
   VStack,
+  Button,
 } from "@chakra-ui/react";
 
 const DestinationDisplay = (props) => {
@@ -109,7 +109,7 @@ const DestinationDisplay = (props) => {
               </HStack>
             </Text>
           )}
-          <Text py="2">
+          <Text py="2" width="50px">
             <strong>Address:</strong> {props.destination.location.loc_addr}
           </Text>
           <HStack mt={3}>

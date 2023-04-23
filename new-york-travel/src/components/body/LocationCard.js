@@ -3,14 +3,15 @@ import {
   Card,
   CardBody,
   CardFooter,
-  Button,
-  Stack,
   Text,
   Heading,
   Image,
   HStack,
   Box,
+  CardHeader,
+  SimpleGrid,
 } from "@chakra-ui/react";
+import ButtonStyler from "../UI/ButtonStyler";
 
 const LocationCard = (props) => {
   const selectDestination = () => {
@@ -31,70 +32,73 @@ const LocationCard = (props) => {
 
   return (
     <Card
-      direction={{ base: "column", sm: "row" }}
+      direction={{ base: "column", sm: "column" }}
       overflow="hidden"
       variant="outline"
       mt={5}
     >
-      <HStack>
-        <Stack>
-          <CardBody>
-            <Heading size="md">{name}</Heading>
-            {openHoursMon && (
-              <Box py="2">
-                <Text>
-                  <strong>Business Hours:</strong>
-                </Text>
-                <HStack>
-                  <Box width={"7rem"}>
-                    <Text>Monday:</Text>
-                    <Text>Tuesday:</Text>
-                    <Text>Wednesday:</Text>
-                    <Text>Thursday:</Text>
-                    <Text>Friday:</Text>
-                    <Text>Saturday:</Text>
-                    <Text>Sunday:</Text>
-                  </Box>
-                  <Box>
-                    <Text>{openHoursMon}</Text>
-                    <Text>{openHoursTue}</Text>
-                    <Text>{openHoursWed}</Text>
-                    <Text>{openHoursThu}</Text>
-                    <Text>{openHoursFri}</Text>
-                    <Text>{openHoursSat}</Text>
-                    <Text>{openHoursSun}</Text>
-                  </Box>
-                </HStack>
-              </Box>
-            )}
-            <Text py="2">
-              <strong>Type:</strong> {type}
-            </Text>
-            <Text py="2">
-              <strong>Address:</strong> {address}
-            </Text>
-          </CardBody>
-          <CardFooter>
-            <Button
-              variant="solid"
-              colorScheme="blue"
-              onClick={selectDestination}
-            >
-              Add to Itinerary
-            </Button>
-          </CardFooter>
-        </Stack>
-        <Image
-          src={`../photos/${name}.jpg`}
-          alt={name}
-          boxSize="300px"
-          objectFit="cover"
-          border="20px"
-          onError={(e) => {
-            e.target.style.display = "none";
-          }}
-        />
-      </HStack>
+        <CardHeader>
+          <Heading size="md">{name}</Heading>
+        </CardHeader>
+        <CardBody>
+          <SimpleGrid minChildWidth={"150px"}>
+            <Box>
+              {openHoursMon && (
+                <Box py="2">
+                  <Text>
+                    <strong>Business Hours:</strong>
+                  </Text>
+                  <HStack>
+                    <Box width={"7rem"}>
+                      <Text>Monday:</Text>
+                      <Text>Tuesday:</Text>
+                      <Text>Wednesday:</Text>
+                      <Text>Thursday:</Text>
+                      <Text>Friday:</Text>
+                      <Text>Saturday:</Text>
+                      <Text>Sunday:</Text>
+                    </Box>
+                    <Box>
+                      <Text>{openHoursMon}</Text>
+                      <Text>{openHoursTue}</Text>
+                      <Text>{openHoursWed}</Text>
+                      <Text>{openHoursThu}</Text>
+                      <Text>{openHoursFri}</Text>
+                      <Text>{openHoursSat}</Text>
+                      <Text>{openHoursSun}</Text>
+                    </Box>
+                  </HStack>
+                </Box>
+              )}
+              <Text py="2">
+                <strong>Type:</strong> {type}
+              </Text>
+              <Text py="2">
+                <strong>Address:</strong> {address}
+              </Text>
+            </Box>
+            <Box>
+              <Image
+                src={`../photos/${name}.jpg`}
+                alt={name}
+                boxSize="300px"
+                objectFit="cover"
+                border="20px"
+                onError={(e) => {
+                  e.target.src="../photos/no-image.jpg"
+                }}
+                margin="auto"
+              ></Image>
+            </Box>
+          </SimpleGrid>
+        </CardBody>
+        <CardFooter>
+          <ButtonStyler
+            onClick={selectDestination}
+          >
+            Add to Itinerary
+          </ButtonStyler>
+        </CardFooter>
     </Card>
   );
 };

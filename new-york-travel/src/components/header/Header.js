@@ -9,11 +9,10 @@ const Header = () => {
       as="header"
       align="center"
       justify="center"
-      direction="column"
-      mt={20}
+      direction="column"  
     >
       <Box>
-        <Heading as="h1" size={["3xl", "4xl"]}>
+        <Heading font-family="DM Sans" as="h1" size={["xl", "3xl", "4xl"]}>
           New York Travel
         </Heading>
       </Box>

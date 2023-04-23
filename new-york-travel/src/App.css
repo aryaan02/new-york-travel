@@ -36,3 +36,12 @@
     transform: rotate(360deg);
   }
 }
+
+@font-face {
+  font-family: "DM Sans";
+  src: url("https://fonts.googleapis.com/css2?family=DM+Sans&display=swap");
+}
+
+body {
+  font-family: "DM Sans", sans-serif; 
+}

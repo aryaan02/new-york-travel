@@ -15,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import LocationModal from "./LocationModal";
 import DestinationDisplay from "./DestinationDisplay";
 import Cookies from "js-cookie";
+import ButtonStyler from "../UI/ButtonStyler";
 
 const NewItineraryForm = (props) => {
   const [locations, setLocations] = useState([]);
@@ -150,7 +151,7 @@ const NewItineraryForm = (props) => {
   return (
     <Flex width="full" align="center" justifyContent="center">
       <Box mb={10} width={["95%", "30rem"]}>
-        <Box m={10} textAlign="center">
+        <Box m={6} textAlign="center">
           <Heading size={["2xl", "3xl"]}>Create a New Itinerary</Heading>
         </Box>
         <Box textAlign="left">
@@ -216,18 +217,21 @@ const NewItineraryForm = (props) => {
               </FormControl>
             </HStack>
             <Button
-              colorScheme="blue"
+              bg="blue.600"
+              color="#FCFCDD"
               width="full"
               mt={6}
               onClick={submitItinerary}
               type="submit"
+              border="solid 1px #FCFCDD"
             >
               Create Itinerary
             </Button>
             <Button
-              colorScheme="red"
+              bg="red.600"
               width="full"
               mt={6}
+              border="solid 1px #FCFCDD"
               onClick={() => navigate("/account")}
             >
               Cancel

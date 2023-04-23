@@ -7,7 +7,6 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Button,
   HStack,
   Text,
   Link,
@@ -17,8 +16,8 @@ import {
   AlertDescription,
   VStack,
 } from "@chakra-ui/react";
-
 import { useNavigate } from "react-router-dom";
+import ButtonStyler from "../UI/ButtonStyler";
 
 const LoginForm = (props) => {
   // Set up variable states
@@ -93,8 +92,8 @@ const LoginForm = (props) => {
       <VStack>
         <Box p={3} textAlign="center">
           {error && (
-            <Alert status="error">
-              <AlertIcon />
+            <Alert bg="red.400" status="error">
+              <AlertIcon color="red.600" />
               <AlertTitle mr={2}>Login failed!</AlertTitle>
               <AlertDescription>
                 Please check your username and password.
@@ -125,18 +124,17 @@ const LoginForm = (props) => {
                   />
                 </FormControl>
               </HStack>
-              <Button
+              <ButtonStyler
                 onClick={navigateAccount}
-                colorScheme="blue"
                 width="full"
-                mt={4}
+                mt={8}
                 type="submit"
               >
                 Login
-              </Button>
+              </ButtonStyler>
               <Text mt={4} textAlign="center">
                 Don't have an account?{" "}
-                <Link color="blue.500" onClick={navigateRegister}>
+                <Link color="blue.200" onClick={navigateRegister}>
                   Register
                 </Link>
               </Text>
