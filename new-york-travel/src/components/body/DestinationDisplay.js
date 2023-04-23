@@ -11,10 +11,11 @@ import {
   Center,
   VStack,
   Button,
+  Box,
+  SimpleGrid,
 } from "@chakra-ui/react";
 
 const DestinationDisplay = (props) => {
-
   const updateDestination = props.updateDestination;
   const index = props.index;
   const destination = props.destination;
@@ -41,7 +42,7 @@ const DestinationDisplay = (props) => {
       setError("Visit date must be between itinerary start and end date.");
     } else {
       setVisitDate(e.target.value);
-      setError("")
+      setError("");
     }
   };
 
@@ -71,7 +72,15 @@ const DestinationDisplay = (props) => {
       visitNote: visitNote,
     };
     updateDestination(localDestination, index);
-  }, [visitDate, visitStartTime, visitEndTime, visitNote, index, updateDestination, destination]);
+  }, [
+    visitDate,
+    visitStartTime,
+    visitEndTime,
+    visitNote,
+    index,
+    updateDestination,
+    destination,
+  ]);
 
   return (
     <Card
@@ -85,31 +94,27 @@ const DestinationDisplay = (props) => {
           <Heading size="md">{props.destination.location.loc_name}</Heading>
 
           {openHoursMon && (
-            <Text py="2">
+            <Box>
               <strong>Business Hours:</strong>
-              <HStack>
-                <VStack>
-                  <Text textAlign={"left"}>Monday:</Text>
-                  <Text>Tuesday:</Text>
-                  <Text>Wednesday:</Text>
-                  <Text>Thursday:</Text>
-                  <Text>Friday:</Text>
-                  <Text>Saturday:</Text>
-                  <Text>Sunday:</Text>
-                </VStack>
-                <VStack>
-                  <Text>{openHoursMon}</Text>
-                  <Text>{openHoursTue}</Text>
-                  <Text>{openHoursWed}</Text>
-                  <Text>{openHoursThu}</Text>
-                  <Text>{openHoursFri}</Text>
-                  <Text>{openHoursSat}</Text>
-                  <Text>{openHoursSun}</Text>
-                </VStack>
-              </HStack>
-            </Text>
+              <SimpleGrid columns={2}>
+                <Text>Monday:</Text>
+                <Text>{openHoursMon}</Text>
+                <Text>Tuesday:</Text>
+                <Text>{openHoursTue}</Text>
+                <Text>Wednesday:</Text>
+                <Text>{openHoursWed}</Text>
+                <Text>Thursday:</Text>
+                <Text>{openHoursThu}</Text>
+                <Text>Friday:</Text>
+                <Text>{openHoursFri}</Text>
+                <Text>Saturday:</Text>
+                <Text>{openHoursSat}</Text>
+                <Text>Sunday:</Text>
+                <Text>{openHoursSun}</Text>
+              </SimpleGrid>
+            </Box>
           )}
-          <Text py="2" width="50px">
+          <Text py="2">
             <strong>Address:</strong> {props.destination.location.loc_addr}
           </Text>
           <HStack mt={3}>
@@ -159,6 +164,7 @@ const DestinationDisplay = (props) => {
             <Button
               colorScheme="red"
               onClick={removeDestinationHandler}
+              width="full"
             >
               Remove Destination
             </Button>

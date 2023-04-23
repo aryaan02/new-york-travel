@@ -83,7 +83,7 @@ for attraction in attractions:
                       ':'.join(response['result']['opening_hours']
                                ['weekday_text'][6].split(":")[1:]),
                       response['result']['formatted_address'],
-                      'attraction',
+                      'Attraction',
                       response['result']['rating'],
                       response['result']['user_ratings_total'])
             cursor.execute(query, values)
@@ -92,7 +92,7 @@ for attraction in attractions:
 
             values = (response['result']['name'],
                       response['result']['formatted_address'],
-                      'attraction',
+                      'Attraction',
                       response['result']['rating'],
                       response['result']['user_ratings_total'])
             cursor.execute(query, values)
@@ -122,7 +122,7 @@ for restaurant in restaurants:
                       ':'.join(response['result']['opening_hours']
                                ['weekday_text'][6].split(":")[1:]),
                       response['result']['formatted_address'],
-                      'attraction',
+                      'Restaurant',
                       response['result']['rating'],
                       response['result']['user_ratings_total'])
             cursor.execute(query, values)
@@ -131,7 +131,7 @@ for restaurant in restaurants:
 
             values = (response['result']['name'],
                       response['result']['formatted_address'],
-                      'attraction',
+                      'Restaurant',
                       response['result']['rating'],
                       response['result']['user_ratings_total'])
             cursor.execute(query, values)

@@ -9,6 +9,7 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  Heading,
 } from "@chakra-ui/react";
 import LocationCard from "./LocationCard";
 import ButtonStyler from "../UI/ButtonStyler";
@@ -33,8 +34,14 @@ const LocationModal = (props) => {
         isCentered
       >
         <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Select a Location</ModalHeader>
+        <ModalContent
+          bg="#244070DD"
+          border="solid 3px #4460D099"
+          color="#FDFDF0"
+        >
+          <ModalHeader pt={6} textAlign="center">
+            <Heading>Select a Location</Heading>
+          </ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             {props.locations.map((location) => (

@@ -9,6 +9,7 @@ const Styler = (props) => {
         backgroundRepeat: "no-repeat",
         position: "sticky",
         height: "100vh",
+        width: "100vw",
         backgroundSize: "cover",
         display: "flex",
         justifyContent: "center",
@@ -26,7 +27,7 @@ const Styler = (props) => {
           padding: "7vh",
           background: "#243A60DD",
           color: "#FCFCDD",
-          width: "40vw",
+          width: "60vw",
           height: `${props.innerHeight}`,
         }}
       >

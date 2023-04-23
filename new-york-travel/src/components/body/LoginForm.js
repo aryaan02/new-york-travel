@@ -90,12 +90,12 @@ const LoginForm = (props) => {
   return (
     <Flex width="full" align="center" justifyContent="center">
       <VStack>
-        <Box p={3} textAlign="center">
+        <Box p={2} textAlign="center">
           {error && (
             <Alert bg="red.400" status="error">
               <AlertIcon color="red.600" />
-              <AlertTitle mr={2}>Login failed!</AlertTitle>
-              <AlertDescription>
+              <AlertTitle>Login failed!</AlertTitle>
+              <AlertDescription size={'md'}>
                 Please check your username and password.
               </AlertDescription>
             </Alert>

@@ -13,7 +13,7 @@ import {
   VerticalTimeline,
   VerticalTimelineElement,
 } from "react-vertical-timeline-component";
-import 'react-vertical-timeline-component/style.min.css';
+import "react-vertical-timeline-component/style.min.css";
 import ButtonStyler from "../UI/ButtonStyler";
 
 const ItineraryDetails = (props) => {
@@ -38,8 +38,6 @@ const ItineraryDetails = (props) => {
   };
 
   useEffect(() => {
-    console.log(id);
-    console.log(userId);
     const fetchDetails = async () => {
       const response = await fetch(`http://localhost:5000/itinerary-entries`, {
         method: "POST",
@@ -48,14 +46,11 @@ const ItineraryDetails = (props) => {
         },
         body: JSON.stringify({ itin_id: id, user_id: userId }),
       });
-      console.log(response);
       const data = await response.json();
-      console.log(data);
       return await data;
     };
 
     fetchDetails().then((data) => {
-      console.log(data);
       setItinDetails(data);
       let startDateList = data.start_date.split("-");
       let endDateList = data.end_date.split("-");
@@ -108,6 +103,9 @@ const ItineraryDetails = (props) => {
         variant="outline"
         width="full"
         textAlign="center"
+        bg="#244070DD"
+        border="solid 3px #4460D099"
+        color="#FDFDF0"
       >
         <Stack width="full">
           <CardBody>
@@ -124,41 +122,27 @@ const ItineraryDetails = (props) => {
           </CardBody>
         </Stack>
       </Card>
-      <ButtonStyler colorScheme="yellow" onClick={flightButtonHandler}>Order Flight</ButtonStyler>
-      {/*itinDetails.hasOwnProperty("dest_list") &&
-          itinDetails.dest_list.map((dest, index) => (
-            { <Card key={index}>
-              <CardBody>
-                <Heading size="md">
-                  <strong>Location Name:</strong>
-                  {dest.loc_name}
-                </Heading>
-                <Text py={2}>Address: {dest.loc_addr}</Text>
-                <Text py={2}>Visit Date: {dest.visit_date}</Text>
-                <Text py={2}>Visit Start Time: {dest.visit_start_time}</Text>
-                <Text py={2}>Visit End Time: {dest.visit_end_time}</Text>
-                <Text py={2}>Visit Note: {dest.visit_note}</Text>
-              </CardBody>
-            </Card> }
-          ))*/}
+      <ButtonStyler colorScheme="yellow" onClick={flightButtonHandler}>
+        Order Flight
+      </ButtonStyler>
       {itinDetails.hasOwnProperty("dest_list") && (
         <VerticalTimeline
           className="vertical-timeline-element--work"
-          contentStyle={{ background: "rgb(33, 150, 243)", color: "#fff" }}
-          contentArrowStyle={{ borderRight: "7px solid  rgb(33, 150, 243)" }}
-          date="2011 - present"
-          iconStyle={{ background: "rgb(33, 150, 243)", color: "#fff" }}
+          contentStyle={{ background: "#244070", color: "#244070" }}
+          contentArrowStyle={{ borderRight: "7px solid #244070" }}
+          iconStyle={{ background: "#244070", color: "#244070" }}
+          lineColor="#FDFDF0"
         >
           {itinDetails.dest_list.map((dest, index) => (
             <VerticalTimelineElement
               key={index}
               className="vertical-timeline-element--work"
-              contentStyle={{ background: "rgb(33, 150, 243)", color: "#fff" }}
+              contentStyle={{ background: "#244070", color: "#FDFDF0" }}
               contentArrowStyle={{
-                borderRight: "7px solid  rgb(33, 150, 243)",
+                borderRight: "7px solid #FDFDF0",
               }}
               date={dest.visit_date}
-              iconStyle={{ background: "rgb(33, 150, 243)", color: "#fff" }}
+              iconStyle={{ background: "#244070", color: "#244070" }}
             >
               <h3 className="vertical-timeline-element-title">
                 {dest.loc_name}
