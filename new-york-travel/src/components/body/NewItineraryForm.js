@@ -10,12 +10,12 @@ import {
   Input,
   VStack,
   Text,
+  SimpleGrid
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import LocationModal from "./LocationModal";
 import DestinationDisplay from "./DestinationDisplay";
 import Cookies from "js-cookie";
-import ButtonStyler from "../UI/ButtonStyler";
 
 const NewItineraryForm = (props) => {
   const [locations, setLocations] = useState([]);
@@ -27,6 +27,7 @@ const NewItineraryForm = (props) => {
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
+  // Check if user is logged in
   useEffect(() => {
     const logged_in = Cookies.get("logged_in");
     if (logged_in === "false") {
@@ -34,9 +35,12 @@ const NewItineraryForm = (props) => {
     }
   }, [navigate]);
 
+  // Fetch user id
   const userId = Cookies.get("user_id");
 
-  const submitItinerary = () => {
+  // Submit itinerary handler
+  const submitItinerary = (e) => {
+    e.preventDefault();
     let startDate = new Date(itineraryStartDate).getTime();
     let endDate = new Date(itineraryEndDate).getTime();
     if (startDate > endDate) {
@@ -61,12 +65,21 @@ const NewItineraryForm = (props) => {
       itinDescription: itineraryDescription,
       destList: destinationArray,
     };
+    console.log(itinerary);
+    let jsonString = "";
+    try {
+      jsonString = JSON.stringify(itinerary);
+    } catch (e) {
+      console.log("JSON string error: ", e)
+      return;
+    }
+    console.log(jsonString);
     fetch("http://localhost:5000/new-itinerary", {
       method: "POST",
       headers: {
         "Content-type": "application/json",
       },
-      body: JSON.stringify(itinerary),
+      body: jsonString,
     }).then((result) => {
       if (result.status === 200) {
         // Itinerary creation successful
@@ -79,6 +92,7 @@ const NewItineraryForm = (props) => {
     });
   };
 
+  // Add destination to itinerary handler
   const addDestination = (destination) => {
     let extendedDestination = {
       location: destination,
@@ -102,6 +116,7 @@ const NewItineraryForm = (props) => {
     [selectedDestinations]
   );
 
+  // Remove destination from list
   const removeDestination = (index) => {
     setSelectedDestinations([
       ...selectedDestinations.slice(0, index),
@@ -126,6 +141,7 @@ const NewItineraryForm = (props) => {
     setItineraryEndDate(e.target.value);
   };
 
+  // Fetch locations
   useEffect(() => {
     const fetchLocations = async () => {
       const response = await fetch("http://localhost:5000/locations", {
@@ -146,13 +162,13 @@ const NewItineraryForm = (props) => {
     fetchLocations().then((data) => {
       setLocations(data);
     });
-  }, []);
+  }, [userId]);
 
   return (
     <Flex width="full" align="center" justifyContent="center">
-      <Box mb={10} width={["95%", "30rem"]}>
+      <Box mb={10} width={["100%", "30rem"]}>
         <Box m={6} textAlign="center">
-          <Heading size={["2xl", "3xl"]}>Create a New Itinerary</Heading>
+          <Heading size={["xl", "3xl"]}>Create a New Itinerary</Heading>
         </Box>
         <Box textAlign="left">
           <form>
@@ -176,7 +192,7 @@ const NewItineraryForm = (props) => {
                 />
               </FormControl>
             </HStack>
-            <HStack mt={6}>
+            <SimpleGrid mt={6} minChildWidth="100px" spacing={5 }>
               <FormControl isRequired>
                 <FormLabel>Itinerary Start Date</FormLabel>
                 <Input
@@ -193,7 +209,7 @@ const NewItineraryForm = (props) => {
                   onChange={itineraryEndDateHandler}
                 />
               </FormControl>
-            </HStack>
+            </SimpleGrid>
             <VStack mt={6}>
               {selectedDestinations.map((destination, index) => (
                 <DestinationDisplay
@@ -222,7 +238,6 @@ const NewItineraryForm = (props) => {
               width="full"
               mt={6}
               onClick={submitItinerary}
-              type="submit"
               border="solid 1px #FCFCDD"
             >
               Create Itinerary

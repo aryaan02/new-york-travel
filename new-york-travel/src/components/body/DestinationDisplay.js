@@ -9,7 +9,6 @@ import {
   FormLabel,
   Input,
   Center,
-  VStack,
   Button,
   Box,
   SimpleGrid,
@@ -72,15 +71,8 @@ const DestinationDisplay = (props) => {
       visitNote: visitNote,
     };
     updateDestination(localDestination, index);
-  }, [
-    visitDate,
-    visitStartTime,
-    visitEndTime,
-    visitNote,
-    index,
-    updateDestination,
-    destination,
-  ]);
+    // eslint-disable-next-line
+  }, [visitDate, visitStartTime, visitEndTime, visitNote, index]);
 
   return (
     <Card
@@ -88,89 +80,90 @@ const DestinationDisplay = (props) => {
       overflow="hidden"
       variant="outline"
       width="full"
+      bg={"#243A60DD"}
+      color={"#FCFCDD"}
+      outline={"solid 5px #243A60"}
+      alignContent={"center"}
     >
-      <VStack width="full">
-        <CardBody>
-          <Heading size="md">{props.destination.location.loc_name}</Heading>
-
-          {openHoursMon && (
-            <Box>
-              <strong>Business Hours:</strong>
-              <SimpleGrid columns={2}>
-                <Text>Monday:</Text>
-                <Text>{openHoursMon}</Text>
-                <Text>Tuesday:</Text>
-                <Text>{openHoursTue}</Text>
-                <Text>Wednesday:</Text>
-                <Text>{openHoursWed}</Text>
-                <Text>Thursday:</Text>
-                <Text>{openHoursThu}</Text>
-                <Text>Friday:</Text>
-                <Text>{openHoursFri}</Text>
-                <Text>Saturday:</Text>
-                <Text>{openHoursSat}</Text>
-                <Text>Sunday:</Text>
-                <Text>{openHoursSun}</Text>
-              </SimpleGrid>
-            </Box>
-          )}
-          <Text py="2">
-            <strong>Address:</strong> {props.destination.location.loc_addr}
+      <CardBody alignItems="left" padding={"30px"}>
+        <Heading size="md">{props.destination.location.loc_name}</Heading>
+        {openHoursMon && (
+          <Box>
+            <strong>Business Hours:</strong>
+            <SimpleGrid columns={2}>
+              <Text>Monday:</Text>
+              <Text>{openHoursMon}</Text>
+              <Text>Tuesday:</Text>
+              <Text>{openHoursTue}</Text>
+              <Text>Wednesday:</Text>
+              <Text>{openHoursWed}</Text>
+              <Text>Thursday:</Text>
+              <Text>{openHoursThu}</Text>
+              <Text>Friday:</Text>
+              <Text>{openHoursFri}</Text>
+              <Text>Saturday:</Text>
+              <Text>{openHoursSat}</Text>
+              <Text>Sunday:</Text>
+              <Text>{openHoursSun}</Text>
+            </SimpleGrid>
+          </Box>
+        )}
+        <Text py="2">
+          <strong>Address:</strong> {props.destination.location.loc_addr}
+        </Text>
+        <HStack mt={3}>
+          <FormControl isRequired>
+            <FormLabel>Visit Date: </FormLabel>
+            <Input
+              type="date"
+              placeholder="Destination Visit Date"
+              onChange={visitDateHandler}
+            />
+          </FormControl>
+        </HStack>
+        <SimpleGrid mt={3} minChildWidth={"30px"} spacing={5}>
+          <FormControl isRequired>
+            <FormLabel>Visit Start Time: </FormLabel>
+            <Input
+              type="time"
+              placeholder="Destination Visit Start Time"
+              onChange={visitStartTimeHandler}
+            />
+          </FormControl>
+          <FormControl isRequired>
+            <FormLabel>Visit End Time: </FormLabel>
+            <Input
+              type="time"
+              placeholder="Destination Visit End Time"
+              onChange={visitEndTimeHandler}
+            />
+          </FormControl>
+        </SimpleGrid>
+        <HStack mt={3}>
+          <FormControl>
+            <FormLabel>Visit Note: </FormLabel>
+            <Input
+              type="Text"
+              placeholder="Destination Visit Notes"
+              onChange={visitNoteHandler}
+            />
+          </FormControl>
+        </HStack>
+        {error && (
+          <Text mt={2} color="red">
+            {error}
           </Text>
-          <HStack mt={3}>
-            <FormControl isRequired>
-              <FormLabel>Visit Date: </FormLabel>
-              <Input
-                type="date"
-                placeholder="Destination Visit Date"
-                onChange={visitDateHandler}
-              />
-            </FormControl>
-          </HStack>
-          <HStack mt={3}>
-            <FormControl isRequired>
-              <FormLabel>Visit Start Time: </FormLabel>
-              <Input
-                type="time"
-                placeholder="Destination Visit Start Time"
-                onChange={visitStartTimeHandler}
-              />
-            </FormControl>
-            <FormControl isRequired>
-              <FormLabel>Visit End Time: </FormLabel>
-              <Input
-                type="time"
-                placeholder="Destination Visit End Time"
-                onChange={visitEndTimeHandler}
-              />
-            </FormControl>
-          </HStack>
-          <HStack mt={3}>
-            <FormControl>
-              <FormLabel>Visit Note: </FormLabel>
-              <Input
-                type="Text"
-                placeholder="Destination Visit Notes"
-                onChange={visitNoteHandler}
-              />
-            </FormControl>
-          </HStack>
-          {error && (
-            <Text mt={2} color="red">
-              {error}
-            </Text>
-          )}
-          <Center mt={6}>
-            <Button
-              colorScheme="red"
-              onClick={removeDestinationHandler}
-              width="full"
-            >
-              Remove Destination
-            </Button>
-          </Center>
-        </CardBody>
-      </VStack>
+        )}
+        <Center mt={6}>
+          <Button
+            colorScheme="red"
+            onClick={removeDestinationHandler}
+            width="full"
+          >
+            Remove Destination
+          </Button>
+        </Center>
+      </CardBody>
     </Card>
   );
 };

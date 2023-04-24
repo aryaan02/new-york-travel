@@ -1,43 +1,40 @@
 const express = require("express");
-const sqlite3 = require("sqlite3");
 const cors = require("cors");
-const path = require("path");
 const bodyParser = require("body-parser");
 const dbCmd = require("./db/db_cmd.js");
+const crypto = require("crypto");
 
+// Initialize express server
 const app = express();
 app.use(cors());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+
+// Hash a string
+const stringHasher = (str) => {
+  return crypto.createHash("md5").update(str).digest("hex");
+};
 
 // Confirm server connection
 app.listen(5000, () => {
   console.log("Server started (http://localhost:5000/) !");
 });
 
-// Send test message
-app.get("/", (req, res) => {
-  res.send("Hello, world!");
-});
-
-// Function to register user in database
-// TODO: Check for duplicate username
+// User registration handler
 const registerUser = async (userInfoJSON) => {
   let insertParam = new dbCmd.insertParameters("users", [
     ["first_name", userInfoJSON["first_name"]],
     ["last_name", userInfoJSON["last_name"]],
     ["username", userInfoJSON["username"]],
-    ["password", userInfoJSON["password"]],
+    ["password", stringHasher(userInfoJSON["password"])],
     ["residence_city", userInfoJSON["residence_city"]],
     ["residence_state", userInfoJSON["residence_state"]],
   ]);
-  console.log(userInfoJSON);
-  console.log(insertParam);
   let result = await dbCmd.dbInsert(insertParam);
   return result;
 };
 
-// Handles register post request
+// Handles registration post request
 app.post("/register", async (req, res) => {
   const result = await registerUser(req.body);
   if (result === false) {
@@ -64,7 +61,7 @@ const loginCheck = async (userInfoJSON) => {
     ["users"],
     [
       ["username", "=", userInfoJSON.username],
-      ["password", "=", userInfoJSON.password],
+      ["password", "=", stringHasher(userInfoJSON.password)],
     ],
     [],
     [],
@@ -72,7 +69,6 @@ const loginCheck = async (userInfoJSON) => {
   );
   const result = await dbCmd.dbQuery(queryParam);
   console.log(result);
-  //console.log(result.length);
   if (result.length > 0) {
     return result;
   } else {
@@ -99,25 +95,6 @@ app.post("/login", async (req, res) => {
 
 // Insert itinerary into database, return true on success, false on fail.
 const itineraryInsert = async (itinJSON) => {
-  /*
-  itineraryJSON = {
-    userId;
-    itinName;
-    itinStartDate;
-    itinEndDate;
-    itinDescription;
-    destList[
-      {
-        locationId;
-        visitDate;
-        visitStartTime;
-        visitEndTime;
-        visitNote
-      }
-    ]
-  }
-  */
-
   // Insert Itinerary into DB
   let itinParam = new dbCmd.insertParameters("itineraries", [
     ["itin_name", itinJSON.itinName],
@@ -153,8 +130,8 @@ const itineraryInsert = async (itinJSON) => {
     ]);
     let destId = await dbCmd.dbInsert(destParam);
     if (!destId) {
-      console.log("Insert dest failed");
-      return destId;
+      console.log("Insert dest failed", destId);
+      return false;
     }
 
     // Link itinerary with dest
@@ -164,8 +141,8 @@ const itineraryInsert = async (itinJSON) => {
     ]);
     let itinDestId = await dbCmd.dbInsert(itinDestParam);
     if (!itinDestId) {
-      console.log("Insert itin-dest failed");
-      return itinDestId;
+      console.log("Insert itin-dest failed", itinDestId);
+      return false;
     }
   }
 
@@ -179,7 +156,7 @@ app.post("/new-itinerary", async (req, res) => {
   if (result) {
     // Insert successful
     console.log("Itinerary insert successful.");
-    res.status(200).send(JSON.stringify(result[0]));
+    res.sendStatus(200);
   } else {
     // Insert failed
     console.log("Itinerary insert failed.");
@@ -194,7 +171,11 @@ const locationQuery = async () => {
     ["*"],
     ["locations"],
     [],
-    [["loc_name", "ASC"]],
+    [
+      ["loc_rating", "DESC"],
+      ["loc_rating_count", "DESC"],
+      ["loc_name", "ASC"],
+    ],
     null,
     0
   );
@@ -218,9 +199,6 @@ app.get("/locations", async (req, res) => {
 
 // Get all itineraries of user
 const itinQuery = async (userId) => {
-  // SELECT * FROM itineraries JOIN user_itineraries
-  // ON itineraries.id = user_itineraries.itinerary_id
-  // WHERE user_itineraries.user_id = userId
   let queryParam = new dbCmd.queryParameters(
     [
       "itineraries.itin_id",
@@ -279,7 +257,6 @@ const itinEntryQuery = async (itinInfo) => {
   if (itinResult.length === 0) {
     return null;
   }
-  //console.log(itinResult);
 
   // Get destination information
   let destParam = new dbCmd.queryParameters(

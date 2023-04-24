@@ -1,2 +1,2 @@
 # project-project-group-6
-project-project-group-6 created by GitHub Classroom
+Navigate to the project folder called 'new-york-travel' to see the project code.

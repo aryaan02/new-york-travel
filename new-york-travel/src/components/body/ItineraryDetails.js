@@ -6,7 +6,6 @@ import {
   Text,
   Heading,
   VStack,
-  Button,
 } from "@chakra-ui/react";
 import Cookies from "js-cookie";
 import {
@@ -32,10 +31,6 @@ const ItineraryDetails = (props) => {
   });
   const id = props.itinId;
   let userId = Cookies.get("user_id");
-
-  const showDetailsHandler = () => {
-    props.setShowDetails(false);
-  };
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -87,7 +82,7 @@ const ItineraryDetails = (props) => {
 
   useEffect(() => {
     setFlightLink(
-      `https://www.expedia.com/Flights-Search?flight-type=on&mode=search&trip=roundtrip&leg1=from%3A${residenceLocation}%2Cto%3ANew+York+(NYC+-+All+Airports)%2Cdeparture%3A4%2F23%2F2023TANYT&options=cabinclass%3Aeconomy&leg2=from%3ANew+York+(NYC+-+All+Airports)%2Cto%3A${residenceLocation}%2Cdeparture%3A4%2F27%2F2023TANYT&passengers=children%3A0%2Cadults%3A1%2Cseniors%3A0%2Cinfantinlap%3AY&fromDate=${`${startDate.month}%2F${startDate.day}%2F${startDate.year}`}&toDate=${`${endDate.month}%2F${endDate.day}%2F${endDate.year}`}&d1=${`${startDate.year}-${startDate.month}-${startDate.day}`}&d2=${`${startDate.year}-${startDate.month}-${startDate.day}`}`
+      `https://www.expedia.com/Flights-Search?flight-type=on&mode=search&trip=roundtrip&leg1=from%3A${residenceLocation}%2Cto%3ANew+York+(NYC+-+All+Airports)%2Cdeparture%3A${startDate.month}%2F${startDate.day}%2F${startDate.year}TANYT&options=cabinclass%3Aeconomy&leg2=from%3ANew+York+(NYC+-+All+Airports)%2Cto%3A${residenceLocation}%2Cdeparture%3A${endDate.month}%2F${endDate.day}%2F${endDate.year}TANYT&passengers=children%3A0%2Cadults%3A1%2Cseniors%3A0%2Cinfantinlap%3AY&fromDate=${`${startDate.month}%2F${startDate.day}%2F${startDate.year}`}&toDate=${`${endDate.month}%2F${endDate.day}%2F${endDate.year}`}&d1=${`${startDate.year}-${startDate.month}-${startDate.day}`}&d2=${`${endDate.year}-${endDate.month}-${endDate.day}`}`
     );
   }, [residenceLocation, startDate, endDate]);
 
@@ -137,7 +132,7 @@ const ItineraryDetails = (props) => {
             <VerticalTimelineElement
               key={index}
               className="vertical-timeline-element--work"
-              contentStyle={{ background: "#244070", color: "#FDFDF0" }}
+              contentStyle={{ background: "#244070", color: "#FDFDF0", outline: "solid 3px #FDFDF0" }}
               contentArrowStyle={{
                 borderRight: "7px solid #FDFDF0",
               }}
@@ -158,9 +153,9 @@ const ItineraryDetails = (props) => {
           ))}
         </VerticalTimeline>
       )}
-      <Button colorScheme="red" onClick={showDetailsHandler}>
+      {/* <Button colorScheme="red" onClick={showDetailsHandler}>
         Back
-      </Button>
+      </Button> */}
     </VStack>
   );
 };

@@ -196,19 +196,13 @@ const dbQuery = (queryParam) => {
   // Run command and check for errors
   let db_promise = new Promise(resolve => {
     db.all(sqlCmd, valuesList, (err, rows) => {
-      //console.log("db.all call triggered");
       if (err) {
         console.log("Error during DB query");
         console.log(err.message);
         resolve(null);
       }
       rows.forEach((row) => {
-        //console.log("Printing each row");
-        //console.log(row);
         resultArray.push(row);
-
-        // Return results
-        //console.log(resultArray);
       });
       
       if (resultArray.length > 0) {
@@ -224,14 +218,11 @@ const dbQuery = (queryParam) => {
 };
 
 // Insert items into database, return insertd item id on success, null on fail
-// TODO: Make this async
 const dbInsert = (insertParam) => {
   const db = dbConn();
 
   // Get sql command for inserting
   let [sqlCmd, valueList] = insertCmd(insertParam);
-  // console.log(sqlCmd);
-  // console.log(valueList);
 
   // Run command and check error message
   let db_promise = new Promise(resolve => {

@@ -1,21 +1,15 @@
 import React, { useEffect, useState } from "react";
-import {
-  Card,
-  CardBody,
-  Stack,
-  Text,
-  Heading,
-  Box,
-} from "@chakra-ui/react";
+import { Card, CardBody, Stack, Text, Heading, Box } from "@chakra-ui/react";
 import ButtonStyler from "../UI/ButtonStyler";
 
 const ItineraryDisplay = (props) => {
-  const navigateItineraryDetails = () => {
-    props.setShowDetails(true);
-    props.setItinId(props.itinerary.itin_id);
-  };
-
   const [descriptionText, setDescriptionText] = useState("");
+
+  // Navigate to itinerary details page
+  const navigateItineraryDetails = () => {
+    props.setItinId(props.itinerary.itin_id);
+    props.onOpen();
+  };
 
   useEffect(() => {
     if (props.itinerary.itin_description) {
@@ -34,7 +28,7 @@ const ItineraryDisplay = (props) => {
       direction={{ base: "column", sm: "row" }}
       overflow="hidden"
       variant="outline"
-      width={[ "18rem", "15rem" ]}
+      width={["10rem", "18rem"]}
       height="fit-content"
       m={0}
       bg="#244070DD"
@@ -47,7 +41,7 @@ const ItineraryDisplay = (props) => {
           <Box height="2.5rem">
             <Text py={2}>{descriptionText}</Text>
           </Box>
-          <Text py={2}>
+          <Text py={2} pt={5}>
             <strong>Start Date: </strong>
             {props.itinerary.start_date}
           </Text>
@@ -55,11 +49,7 @@ const ItineraryDisplay = (props) => {
             <strong>End Date: </strong>
             {props.itinerary.end_date}
           </Text>
-          <ButtonStyler
-            size="sm"
-            mt="1rem"
-            onClick={navigateItineraryDetails}
-          >
+          <ButtonStyler size="sm" mt="1rem" onClick={navigateItineraryDetails}>
             View Details
           </ButtonStyler>
         </CardBody>

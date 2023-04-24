@@ -5,7 +5,14 @@ import {
   Heading,
   VStack,
   SimpleGrid,
-  Text,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
@@ -14,31 +21,31 @@ import ItineraryDetails from "./ItineraryDetails";
 import ButtonStyler from "../UI/ButtonStyler";
 
 const Account = (props) => {
+  const { isOpen, onOpen, onClose } = useDisclosure();
   const [itineraries, setItineraries] = useState([]);
-  const [showDetails, setShowDetails] = useState(false);
   const [itinId, setItinId] = useState("");
   const navigate = useNavigate();
 
-  // let userInfo = props.userInfo;
+  // Get user id and first name from cookies
   let userId = Cookies.get("user_id");
   let firstName = Cookies.get("first_name");
 
+  // Check if user is logged in
   const logged_in = Cookies.get("logged_in");
 
-  const showDetailsHandler = () => {
-    setShowDetails(true);
-  };
-
+  // Set itinerary id handler
   const itinIdHandler = (id) => {
     setItinId(id);
   };
 
+  // Navigate to home page if user is not logged in
   useEffect(() => {
     if (logged_in === "false") {
       navigate("/");
     }
   }, [logged_in, navigate]);
 
+  // Navigate to new itinerary page
   const navigateNewItinerary = () => {
     navigate("/create-itinerary");
   };
@@ -59,48 +66,61 @@ const Account = (props) => {
 
   return (
     <Fragment>
-      {!showDetails && (
-        <Flex width="full" align="center" justifyContent="center">
-          <VStack p={2}>
-            <Box
-              m={10}
-              p={3}
-              textAlign="center"
-            >
-              <Heading size="3xl">Welcome, {firstName}!</Heading>
+      <Flex width="full" align="center" justifyContent="center">
+        <VStack p={2}>
+          <Box m={10} p={3} textAlign="center">
+            <Heading size="3xl">Welcome, {firstName}!</Heading>
+          </Box>
+          <Box m={10} textAlign="center">
+            <Heading size="xl">Your Itineraries</Heading>
+            <ButtonStyler mt={10} onClick={navigateNewItinerary}>
+              Add New Itinerary
+            </ButtonStyler>
+            {itineraries.length > 0 && (
+              <SimpleGrid
+                columns={[1, 1, 1, 2]}
+                spacing={[10]}
+                mt={6}
+                p={3}
+                borderRadius="1rem"
+                justifyItems="center"
+              >
+                {itineraries.map((itinerary, index) => (
+                  <ItineraryDisplay
+                    key={index}
+                    itinerary={itinerary}
+                    setItinId={itinIdHandler}
+                    onOpen={onOpen}
+                  />
+                ))}
+              </SimpleGrid>
+            )}
+          </Box>
+        </VStack>
+      </Flex>
+      <Modal
+        isOpen={isOpen}
+        onClose={onClose}
+        scrollBehavior="inside"
+        size="6xl"
+        isCentered
+      >
+        <ModalOverlay />
+        <ModalContent bg="#244070" border="solid 3px #4460D099" color="#FDFDF0" height="80vh">
+          <ModalHeader pt={6} textAlign="center">
+            <Heading>Itinerary Details</Heading>
+          </ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Box>
+              <ItineraryDetails itinId={itinId} />
             </Box>
-            <Box m={10} textAlign="center">
-              <Text fontSize={45}>Your Itineraries</Text>
-              <ButtonStyler mt={10} onClick={navigateNewItinerary}>
-                Add New Itinerary
-              </ButtonStyler>
-              {itineraries.length > 0 && (
-                <SimpleGrid
-                  columns={[1,1,1,2]}
-                  spacing={[10]}
-                  mt={6}
-                  p={3}
-                  borderRadius="1rem"
-                  justifyItems="center"
-                >
-                  {itineraries.map((itinerary, index) => (
-                    <ItineraryDisplay
-                      key={index}
-                      itinerary={itinerary}
-                      setShowDetails={showDetailsHandler}
-                      setItinId={itinIdHandler}
-                    />
-                  ))}
-                  
-                </SimpleGrid>
-              )}
-            </Box>
-          </VStack>
-        </Flex>
-      )}
-      {showDetails && (
-        <ItineraryDetails itinId={itinId} setShowDetails={setShowDetails} />
-      )}
+          </ModalBody>
+          <ModalFooter margin={"auto"} >
+            <ButtonStyler onClick={onClose}>Close</ButtonStyler>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Fragment>
   );
 };

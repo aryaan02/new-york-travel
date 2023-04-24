@@ -8,8 +8,8 @@ import Cookies from "js-cookie";
 const NavBar = (props) => {
   const navigate = useNavigate();
 
+  // Navigate to login page
   const navigateLogin = () => {
-    //props.setLoggedIn(false);
     Cookies.set("logged_in", false);
     navigate("/");
   };

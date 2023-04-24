@@ -24,10 +24,10 @@ const Styler = (props) => {
         style={{
           borderRadius: "30px",
           outline: "solid 5px #243A60",
-          padding: "7vh",
+          padding: "7vw",
           background: "#243A60DD",
           color: "#FCFCDD",
-          width: "60vw",
+          width: "min(90vw, 1000px)",
           height: `${props.innerHeight}`,
         }}
       >

@@ -25,11 +25,14 @@ const LoginForm = (props) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState(false);
 
-  // Navigate to register page
   const navigate = useNavigate();
+
+  // Navigate to register page
   const navigateRegister = () => {
     navigate("/register");
   };
+
+  // Navigate to account page
   const navigateAccount = (e) => {
     e.preventDefault();
     let state = {
@@ -64,7 +67,7 @@ const LoginForm = (props) => {
           Cookies.set("residence_state", resultJSON.residence_state);
           Cookies.set("logged_in", true);
           navigate("/account");
-        })
+        });
       } else if (result.status === 401) {
         // Display login error message
         console.log("Login failed");
@@ -73,6 +76,7 @@ const LoginForm = (props) => {
     });
   };
 
+  // Navigate to account page if user is logged in
   useEffect(() => {
     if (props.loggedIn) {
       navigate("/account");
@@ -95,7 +99,7 @@ const LoginForm = (props) => {
             <Alert bg="red.400" status="error">
               <AlertIcon color="red.600" />
               <AlertTitle>Login failed!</AlertTitle>
-              <AlertDescription size={'md'}>
+              <AlertDescription size={"md"}>
                 Please check your username and password.
               </AlertDescription>
             </Alert>

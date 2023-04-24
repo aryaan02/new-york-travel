@@ -6,12 +6,11 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Button,
   HStack,
   Text,
   Link,
 } from "@chakra-ui/react";
-
+import ButtonStyler from "../UI/ButtonStyler";
 import { useNavigate } from "react-router-dom";
 
 const RegisterForm = (props) => {
@@ -50,6 +49,7 @@ const RegisterForm = (props) => {
     setResidenceState(e.target.value);
   };
 
+  // Handle register button click
   const handleRegister = (e) => {
     e.preventDefault();
     let state = {
@@ -138,12 +138,16 @@ const RegisterForm = (props) => {
                 />
               </FormControl>
             </HStack>
-            <Button colorScheme="blue" width="full" mt={4} onClick={handleRegister}>
+            <ButtonStyler
+              onClick={handleRegister}
+              width="full"
+              mt={4}
+            >
               Register
-            </Button>
+            </ButtonStyler>
             <Text mt={4} textAlign="center">
               Already have an account?{" "}
-              <Link color="blue.500" onClick={navigateLogin}>
+              <Link color="blue.200" onClick={navigateLogin}>
                 Login
               </Link>
             </Text>

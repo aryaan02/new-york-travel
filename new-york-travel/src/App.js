@@ -7,7 +7,6 @@ import NewItineraryPage from "./pages/NewItineraryPage";
 import { Route, Routes } from "react-router-dom";
 import { HashRouter } from "react-router-dom";
 import { ChakraProvider } from "@chakra-ui/react";
-import ItineraryDetailsPage from "./pages/ItineraryDetailsPage";
 
 function App() {
   return (
@@ -18,7 +17,6 @@ function App() {
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/account" element={<AccountPage />} />
           <Route path="/create-itinerary" element={<NewItineraryPage />} />
-          <Route path="/itinerary" element={<ItineraryDetailsPage />} />
         </Routes>
       </HashRouter>
     </ChakraProvider>
