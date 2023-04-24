@@ -43,7 +43,7 @@ Tables:
 - locations: Contain information about each location to visit, like opening time and address. 
 - destinations: Contains information about each destination in the itinerary, such as visit date and timespan. 
 - itins_dests: Link each itinerary to the destinations it contains. 
-- For more details about each table column, referene db/db_init.sql.
+- For more details about each table column, reference db/db_init.sql.
 
 Project folder structure:
 app.js: Backend Express server code. Handles database related requests from frontend.
