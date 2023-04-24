@@ -6,19 +6,28 @@ By Aryaan Khan, Alex Shin, and Yuhang Cui
 
 Project Folder: new-york-travel.
 
-Technology stack:
+## Technology stack:
+
 API: Google Maps API
+
 Scripting Language: Python
+
 Database: SQLite
+
 Backend: Node.js with Express.js
+
 Frontend: React.js
 
 ## How to Run the Project
 To install dependencies, run "npm install".
 
 To start the backend Express.js server, run "node app.js".
+
 To start the frontend React.js server, run "npm start".
+
 To get the database file we used, download it from "https://drive.google.com/drive/folders/1R3KIhhRInFFefY3-XO-Qwp9ltJILEatd?usp=share_link" and place it in the "db/" folder.
+
+## Description of Files
 
 Frontend Pages:
 - Login Page: Default landing page, asks the user to login or register an account.
@@ -43,9 +52,10 @@ Tables:
 - locations: Contain information about each location to visit, like opening time and address. 
 - destinations: Contains information about each destination in the itinerary, such as visit date and timespan. 
 - itins_dests: Link each itinerary to the destinations it contains. 
-- For more details about each table column, referene db/db_init.sql.
+- For more details about each table column, reference db/db_init.sql.
 
 Project folder structure:
+
 app.js: Backend Express server code. Handles database related requests from frontend.
 
 db: Contains database file and related scripts.
